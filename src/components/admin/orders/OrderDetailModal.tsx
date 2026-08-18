@@ -368,7 +368,7 @@ export function OrderDetailModal({
             onClick={onClose}
             variant="ghost"
             size="sm"
-            className="bg-bg-primary hover:bg-border-subtle text-text-primary border-border-subtle shrink-0 ml-auto"
+            className="bg-bg-primary hover:bg-border-subtle text-text-primary border-border-subtle text-xs sm:text-sm px-4 sm:px-5 py-2 sm:py-2.5 shrink-0 ml-auto"
           >
             Close
           </Button>

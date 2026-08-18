@@ -368,7 +368,7 @@ export function UserDetailModal({
               onClick={() => onDelete(user)}
               variant="ghost"
               size="sm"
-              className="border-error text-error hover:bg-error hover:text-white hover:border-error"
+              className="border-error text-error hover:bg-error hover:text-white hover:border-error text-xs sm:text-sm px-4 sm:px-5 py-2 sm:py-2.5 shrink-0"
             >
               Delete User
             </Button>
@@ -379,7 +379,7 @@ export function UserDetailModal({
             onClick={onClose}
             variant="ghost"
             size="sm"
-            className="bg-bg-primary hover:bg-border-subtle text-text-primary border-border-subtle"
+            className="bg-bg-primary hover:bg-border-subtle text-text-primary border-border-subtle text-xs sm:text-sm px-4 sm:px-5 py-2 sm:py-2.5 shrink-0"
           >
             Close
           </Button>

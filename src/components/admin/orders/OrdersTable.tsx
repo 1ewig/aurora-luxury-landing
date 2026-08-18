@@ -2,7 +2,7 @@
  * Aurora — src/components/admin/orders/OrdersTable.tsx
  *
  * Sortable, filterable orders table with inline status dropdowns
- * and a "View Details" action that opens OrderDetailModal.
+ * and a "View" action that opens OrderDetailModal.
  */
 
 "use client";
@@ -156,9 +156,9 @@ export function OrdersTable({
                     <td className="px-6 py-4 text-right">
                       <button
                         onClick={() => onViewDetailsClick(o)}
-                        className="px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-text-primary hover:text-accent-primary transition-colors cursor-pointer border border-border-medium rounded-full bg-bg-secondary hover:border-text-primary"
+                        className="px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-text-primary hover:text-accent-primary transition-colors cursor-pointer"
                       >
-                        View Details
+                        View
                       </button>
                     </td>
                   </tr>

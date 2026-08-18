@@ -100,16 +100,19 @@ export function ConfirmDialog({
 
         {/* ================= FOOTER ================= */}
         <div className="flex-shrink-0 px-5 sm:px-6 py-3.5 border-t border-border-subtle bg-bg-secondary flex items-center justify-end gap-2.5">
-          <button
+          <Button
             type="button"
             onClick={onCancel}
             disabled={disabled || loading}
-            className="px-4 py-2 rounded-xl text-xs font-semibold bg-bg-primary hover:bg-border-subtle text-text-primary border border-border-subtle transition-colors cursor-pointer disabled:opacity-50"
+            variant="ghost"
+            size="sm"
+            className="bg-bg-primary hover:bg-border-subtle text-text-primary border-border-subtle"
           >
             {cancelLabel}
-          </button>
-          
+          </Button>
+
           <Button
+            type="button"
             onClick={onConfirm}
             disabled={disabled || loading}
             variant="ghost"
