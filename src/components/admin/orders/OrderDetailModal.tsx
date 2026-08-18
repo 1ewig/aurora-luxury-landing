@@ -8,6 +8,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 // framer-motion animation removed
 import { type OrderData } from "@/stores/useAdminStore";
 import { OrderStatusBadge } from "@/components/ui/OrderStatusBadge";
@@ -83,13 +84,17 @@ export function OrderDetailModal({
                         className="flex gap-4 bg-bg-primary/20 p-3 rounded-2xl border border-border-subtle"
                       >
                         {item.image ? (
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-12 h-16 object-cover rounded-[8px] border border-border-subtle"
-                          />
+                          <div className="relative w-12 h-16 rounded-[8px] overflow-hidden border border-border-subtle shrink-0">
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fill
+                              sizes="48px"
+                              className="object-cover"
+                            />
+                          </div>
                         ) : (
-                          <div className="w-12 h-16 bg-bg-primary rounded-[8px]" />
+                          <div className="w-12 h-16 bg-bg-primary rounded-[8px] shrink-0" />
                         )}
                         <div className="flex-1 min-w-0">
                           <Link href={`/products/${item.slug}`} className="font-semibold text-text-primary text-sm truncate hover:text-accent-primary transition-colors cursor-pointer block">{item.name}</Link>

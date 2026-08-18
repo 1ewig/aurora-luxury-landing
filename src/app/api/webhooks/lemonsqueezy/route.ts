@@ -287,7 +287,7 @@ async function handleOrderCreated(payload: any, lsEventId: string) {
   // Fire-and-forget email — failures are logged but don't block the webhook response
   await sendEmail({
     to: sanitizedAddress.email,
-    subject: `Order Confirmed — ${orderNumber}`,
+    subject: `Order Received — ${orderNumber}`,
     text: orderConfirmationText({
       orderNumber,
       customerName: `${sanitizedAddress.firstName} ${sanitizedAddress.lastName}`.trim() || "Valued Customer",

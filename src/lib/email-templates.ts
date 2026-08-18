@@ -191,7 +191,7 @@ export function orderConfirmationHtml(data: OrderConfirmationData): string {
     <tr>
       <td style="padding:24px 32px">
         <p style="font-size:14px;color:#333;margin:0 0 16px">Hi <strong>${escapeHtml(data.customerName)}</strong>,</p>
-        <p style="font-size:14px;color:#333;margin:0 0 16px">Your order <strong style="font-family:monospace">${data.orderNumber}</strong> has been confirmed and is being prepared.</p>
+        <p style="font-size:14px;color:#333;margin:0 0 16px">Your order <strong style="font-family:monospace">${data.orderNumber}</strong> has been received and is pending fulfillment.</p>
 
         <table width="100%" cellpadding="0" cellspacing="0" style="background:#fafafa;border-radius:8px;padding:16px;margin-bottom:20px">
           <tr><td style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;padding-bottom:8px">Shipping To</td></tr>
@@ -245,10 +245,10 @@ export function orderConfirmationText(data: OrderConfirmationData): string {
     .join("\n");
 
   return [
-    `Order Confirmed — ${data.orderNumber}`,
+    `Order Received — ${data.orderNumber}`,
     "",
     `Hi ${data.customerName},`,
-    `Your order ${data.orderNumber} has been confirmed.`,
+    `Your order ${data.orderNumber} has been received and is pending fulfillment.`,
     "",
     "Shipping To:",
     `  ${data.shippingAddress.firstName} ${data.shippingAddress.lastName}`,
