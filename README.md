@@ -214,7 +214,7 @@ Presentational Components (src/components/*/)
 | **Animations** | Framer Motion 12 | Smooth page entrances, cart drawers, lookbook sliders |
 | **Image Preprocessor**| Sharp | Automated asset WebP conversions and edge constraint scaling |
 | **Notifications** | Nodemailer + SMTP | Automated transactional order confirmations and auth updates |
-| **Payments Integration**| Lemon Squeezy Sandbox | Payment overlay modal, webhooks processing, receipt generation |
+| **Payments Integration**| Lemon Squeezy Sandbox | Payment overlay modal, webhooks processing |
 | **Analytics** | Vercel Analytics | Production user insights, traffic tracking, and performance monitoring |
 
 ---

@@ -103,17 +103,19 @@ export function Hero({ products }: HeroProps) {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="flex flex-col sm:flex-row gap-4 mt-8"
+          className="flex flex-row gap-2 sm:gap-4 mt-8"
         >
           <motion.div
             whileHover={{ scale: 1.03, y: -2 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            className="flex-1 min-w-0 sm:flex-none"
           >
             <Link href="/products" prefetch={false}>
               <Button
                 variant="filled"
                 size="lg"
+                className="whitespace-nowrap w-full px-3.5 py-3 text-[12px] min-[380px]:px-4 min-[380px]:text-[13px] sm:w-auto sm:px-9 sm:py-4 sm:text-base"
               >
                 Shop the Collection
               </Button>
@@ -123,10 +125,12 @@ export function Hero({ products }: HeroProps) {
             whileHover={{ scale: 1.03, y: -2 }}
             whileTap={{ scale: 0.98 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            className="flex-1 min-w-0 sm:flex-none"
           >
             <Button
               variant="ghost"
               size="lg"
+              className="whitespace-nowrap w-full px-3.5 py-3 text-[12px] min-[380px]:px-4 min-[380px]:text-[13px] sm:w-auto sm:px-9 sm:py-4 sm:text-base"
               onClick={() => {
                 document
                   .getElementById("story")

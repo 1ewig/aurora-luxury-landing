@@ -41,7 +41,7 @@ export function InventoryTable({
   return (
     <div className="space-y-8">
       {/* Search & Filter Controls */}
-      <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative w-full sm:max-w-md">
           <svg
             className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary"
@@ -58,27 +58,29 @@ export function InventoryTable({
           />
         </div>
 
-        <select
-          value={selectedCategory}
-          onChange={(e) => onCategoryChange(e.target.value)}
-          className="block px-5 py-3 pr-12 bg-bg-secondary border border-border-medium rounded-full text-sm focus:border-accent-primary focus:outline-none transition-colors cursor-pointer appearance-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B6B6B' stroke-width='2'><path stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/></svg>")`,
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "right 1rem center",
-            backgroundSize: "1rem"
-          }}
-        >
-          <option value="All">All Categories</option>
-          {categoriesList.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
-        <Button variant="ghost" size="md" onClick={onRefresh} disabled={loading}>
-          {loading ? <>Refreshing<span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" /></> : "Refresh"}
-        </Button>
+        <div className="flex items-center gap-3">
+          <select
+            value={selectedCategory}
+            onChange={(e) => onCategoryChange(e.target.value)}
+            className="block flex-1 min-w-0 px-5 py-3 pr-12 bg-bg-secondary border border-border-medium rounded-full text-sm focus:border-accent-primary focus:outline-none transition-colors cursor-pointer appearance-none"
+            style={{
+              backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B6B6B' stroke-width='2'><path stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/></svg>")`,
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "right 1rem center",
+              backgroundSize: "1rem"
+            }}
+          >
+            <option value="All">All Categories</option>
+            {categoriesList.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+          <Button variant="ghost" size="md" onClick={onRefresh} disabled={loading}>
+            {loading ? <>Refreshing<span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" /></> : "Refresh"}
+          </Button>
+        </div>
       </div>
 
 
