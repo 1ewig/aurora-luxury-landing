@@ -78,7 +78,7 @@ export function InventoryTable({
               </option>
             ))}
           </select>
-          <Button variant="ghost" size="md" onClick={onRefresh} disabled={loading}>
+          <Button variant="ghost" size="md" onClick={onRefresh} disabled={loading} className="py-3">
             {loading ? <>Refreshing<span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" /></> : "Refresh"}
           </Button>
         </div>
