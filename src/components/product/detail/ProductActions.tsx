@@ -38,7 +38,7 @@ export function ProductActions({
         onOpenSizeGuide={onOpenSizeGuide}
       />
 
-      <div className="flex flex-col sm:flex-row gap-3 pt-4">
+      <div className="flex flex-row gap-3 pt-4">
         <Button
           variant="ghost"
           size="lg"
