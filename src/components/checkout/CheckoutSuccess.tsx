@@ -8,10 +8,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
 import { Button } from "@/components/ui/Button";
 import { formatCurrency } from "@/utils/formatCurrency";
-import { toPng } from "html-to-image";
 
 interface CheckoutSuccessProps {
   orderNumber: string;
@@ -44,32 +42,8 @@ export function CheckoutSuccess({
   tax,
   total,
 }: CheckoutSuccessProps) {
-  const receiptRef = useRef<HTMLDivElement>(null);
-
-  const handleDownloadReceipt = async () => {
-    if (!receiptRef.current) return;
-    const dataUrl = await toPng(receiptRef.current, {
-      quality: 1,
-      style: {
-        margin: "0",
-        transform: "none",
-      },
-      filter: (node) => {
-        if (node instanceof HTMLElement && node.id === "receipt-actions") {
-          return false;
-        }
-        return true;
-      },
-    });
-    const link = document.createElement("a");
-    link.download = `Receipt-${orderNumber}.png`;
-    link.href = dataUrl;
-    link.click();
-  };
-
   return (
     <div
-      ref={receiptRef}
       className="max-w-xl mx-auto space-y-6 text-center py-12 px-6 md:px-8 bg-white rounded-2xl border border-border-subtle shadow-sm"
     >
       <div className="w-16 h-16 bg-success/10 text-success rounded-full flex items-center justify-center mx-auto mb-6">
@@ -148,23 +122,10 @@ export function CheckoutSuccess({
         <span className="font-semibold text-text-primary">Secured by Lemon Squeezy</span>
       </p>
 
-      <div id="receipt-actions" className="pt-2 flex flex-col sm:flex-row gap-3 justify-center items-center">
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          onClick={handleDownloadReceipt}
-          className="flex items-center gap-1.5 cursor-pointer text-xs"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3.5 h-3.5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-          </svg>
-          <span>Download Receipt</span>
-        </Button>
-
+      <div className="pt-2 flex flex-col sm:flex-row gap-3 justify-center items-center">
         <Link href="/products">
           <Button variant="ghost" size="sm" className="text-xs">
-            Return to Catalog
+            Shop More
           </Button>
         </Link>
       </div>

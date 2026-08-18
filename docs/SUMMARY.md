@@ -41,7 +41,7 @@
 | Linting | ESLint 10 (flat config) | Code quality | `next/core-web-vitals` + `next/recommended`, `@typescript-eslint/parser` |
 | Analytics | `@vercel/analytics` | Web vitals tracking | Injected once in root layout |
 | Image pipeline | `sharp` 0.34.5 | Offline image optimization | `scripts/optimize-images.mjs`: JPG/PNG → WebP (q100, 2000px max) into `public/images/` |
-| Misc | `jsonwebtoken` 9, `html-to-image`, `server-only` | JWT bridge signing; admin dashboard HTML export; server-only module enforcement | `'server-only'` import guard on server utilities (`db.ts`, `admin.ts`, etc.) |
+| Misc | `jsonwebtoken` 9, `server-only` | JWT bridge signing; server-only module enforcement | `'server-only'` import guard on server utilities (`db.ts`, `admin.ts`, etc.) |
 | Deployment | Vercel + InsForge | Hosting | `next.config.ts` `images.remotePatterns` allows `**.insforge.app` storage URLs; `allowedDevOrigins` whitelists ngrok domain; image qualities `[100,85,80,75,50]`, formats `avif,webp`, `minimumCacheTTL` 30 days |
 
 ## 3. High-Level Architectural Mental Model
