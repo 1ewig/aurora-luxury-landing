@@ -3,6 +3,10 @@
  *
  * Form fields for product description, main image upload, and gallery image uploads.
  */
+"use client";
+
+import Image from "next/image";
+
 interface MediaUploadFieldsProps {
   formDescription: string;
   onFormDescriptionChange: (val: string) => void;
@@ -55,11 +59,15 @@ export function MediaUploadFields({
               className="text-xs text-text-secondary file:mr-4 file:py-1.5 file:px-3 file:rounded-full file:border file:border-border-medium file:text-xs file:font-semibold file:bg-white hover:file:bg-bg-primary file:cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
             />
             {mainImageUrl && (
-              <img
-                src={mainImageUrl}
-                alt="Upload preview"
-                className="w-10 h-14 object-cover rounded border border-border-subtle"
-              />
+              <div className="relative w-10 h-14 rounded overflow-hidden border border-border-subtle flex-shrink-0">
+                <Image
+                  src={mainImageUrl}
+                  alt="Upload preview"
+                  fill
+                  sizes="40px"
+                  className="object-cover"
+                />
+              </div>
             )}
           </div>
         </div>
@@ -80,11 +88,15 @@ export function MediaUploadFields({
             <div className="flex gap-2 overflow-x-auto py-1">
               {galleryUrls.map((url, index) => (
                 <div key={index} className="relative group flex-shrink-0">
-                  <img
-                    src={url}
-                    alt="Gallery item"
-                    className="w-10 h-14 object-cover rounded border border-border-subtle"
-                  />
+                  <div className="relative w-10 h-14 rounded overflow-hidden border border-border-subtle">
+                    <Image
+                      src={url}
+                      alt="Gallery item"
+                      fill
+                      sizes="40px"
+                      className="object-cover"
+                    />
+                  </div>
                   <button
                     type="button"
                     onClick={() => onRemoveGalleryImage(index)}

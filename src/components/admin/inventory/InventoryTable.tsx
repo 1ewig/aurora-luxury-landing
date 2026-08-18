@@ -5,6 +5,7 @@
  */
 "use client";
 
+import Image from "next/image";
 import { type ProductData } from "@/stores/useAdminStore";
 import { Button } from "@/components/ui/Button";
 import { useCategoriesQuery } from "@/hooks/queries";
@@ -116,11 +117,15 @@ export function InventoryTable({
                   <tr key={p.id} className="hover:bg-bg-primary/25 transition-colors">
                     <td className="px-6 py-4">
                       {p.image ? (
-                        <img
-                          src={p.image}
-                          alt={p.altText}
-                          className="w-12 h-16 object-cover rounded-[8px] border border-border-subtle"
-                        />
+                        <div className="relative w-12 h-16 rounded-[8px] overflow-hidden border border-border-subtle">
+                          <Image
+                            src={p.image}
+                            alt={p.altText}
+                            fill
+                            sizes="48px"
+                            className="object-cover"
+                          />
+                        </div>
                       ) : (
                         <div className="w-12 h-16 bg-bg-primary rounded-[8px] flex items-center justify-center text-[10px] text-text-muted">
                           No Img
