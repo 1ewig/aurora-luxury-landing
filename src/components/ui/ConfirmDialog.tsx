@@ -1,12 +1,14 @@
 /**
  * Aurora — src/components/ui/ConfirmDialog.tsx
  *
- * Modal confirmation dialog with animated backdrop and scale entrance.
+ * Modal confirmation dialog with animated backdrop and standard styling.
  */
 
 "use client";
 
+import { useEffect } from "react";
 import { Button } from "./Button";
+import { useBodyScrollLock } from "@/hooks/ui/useBodyScrollLock";
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -20,7 +22,7 @@ interface ConfirmDialogProps {
   loading?: boolean;
 }
 
-/** Confirmation modal with animated backdrop and scale entrance. */
+/** Confirmation modal with standard minimal header and consistent design tokens. */
 export function ConfirmDialog({
   open,
   title,
@@ -32,65 +34,103 @@ export function ConfirmDialog({
   disabled,
   loading,
 }: ConfirmDialogProps) {
+  useBodyScrollLock(open);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onCancel();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [open, onCancel]);
+
+  if (!open) return null;
+
   return (
-    <>
-      {open && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-black/55 backdrop-blur-sm"
-            onClick={onCancel}
-          />
+    <div
+      className="fixed inset-0 z-[100] p-3 pb-6 sm:p-6 flex items-center justify-center animate-in fade-in duration-200"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="confirm-dialog-title"
+    >
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+        onClick={onCancel}
+      />
 
-          {/* Dialog */}
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="confirm-dialog-title"
-            className="relative w-full max-w-sm bg-bg-secondary border border-border-subtle rounded-[24px] p-6 sm:p-8 shadow-2xl"
-          >
-            <h2
-              id="confirm-dialog-title"
-              className="font-display font-bold text-xl sm:text-2xl uppercase tracking-wide mb-2"
-            >
-              {title}
-            </h2>
-            <p className="text-sm text-text-secondary mb-6 leading-relaxed">
-              {description}
-            </p>
-
-            <div className="flex items-center justify-end gap-3">
-              <Button
-                onClick={onCancel}
-                disabled={disabled || loading}
-                variant="ghost"
-                size="sm"
-              >
-                {cancelLabel}
-              </Button>
-              <Button
-                onClick={onConfirm}
-                disabled={disabled || loading}
-                variant="ghost"
-                size="sm"
-                className="border-error text-error hover:bg-error hover:text-white hover:border-error"
-              >
-                {loading ? (
-                  <>
-                    <span>{confirmLabel}</span>
-                    <svg className="animate-spin ml-2 -mr-1 h-4 w-4 text-current inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                  </>
-                ) : (
-                  confirmLabel
-                )}
-              </Button>
-            </div>
+      {/* Modal Dialog */}
+      <div className="relative w-full max-w-md bg-bg-secondary border border-border-subtle rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden z-10">
+        
+        {/* ================= BARE MINIMUM HEADER ================= */}
+        <div className="flex-shrink-0 flex items-center justify-between px-5 sm:px-6 py-3.5 border-b border-border-subtle bg-bg-secondary">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <span className="w-2 h-2 rounded-full bg-error shrink-0" />
+            <span className="text-xs sm:text-sm font-bold uppercase tracking-widest text-text-primary truncate">
+              Confirm Action
+            </span>
           </div>
+
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={disabled || loading}
+            className="p-1.5 text-text-secondary hover:text-text-primary transition-colors cursor-pointer rounded-full hover:bg-bg-primary shrink-0 ml-2 disabled:opacity-50"
+            aria-label="Close dialog"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
-      )}
-    </>
+
+        {/* ================= BODY ================= */}
+        <div className="p-5 sm:p-6 space-y-2">
+          <h2
+            id="confirm-dialog-title"
+            className="font-display font-bold text-base sm:text-lg text-text-primary uppercase tracking-wide leading-snug"
+          >
+            {title}
+          </h2>
+          <p className="text-xs sm:text-sm text-text-secondary leading-relaxed">
+            {description}
+          </p>
+        </div>
+
+        {/* ================= FOOTER ================= */}
+        <div className="flex-shrink-0 px-5 sm:px-6 py-3.5 border-t border-border-subtle bg-bg-secondary flex items-center justify-end gap-2.5">
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={disabled || loading}
+            className="px-4 py-2 rounded-xl text-xs font-semibold bg-bg-primary hover:bg-border-subtle text-text-primary border border-border-subtle transition-colors cursor-pointer disabled:opacity-50"
+          >
+            {cancelLabel}
+          </button>
+          
+          <Button
+            onClick={onConfirm}
+            disabled={disabled || loading}
+            variant="ghost"
+            size="sm"
+            className="border-error text-error hover:bg-error hover:text-white hover:border-error"
+          >
+            {loading ? (
+              <span className="flex items-center gap-2">
+                <span>{confirmLabel}</span>
+                <svg className="animate-spin h-3.5 w-3.5 text-current inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+              </span>
+            ) : (
+              confirmLabel
+            )}
+          </Button>
+        </div>
+
+      </div>
+    </div>
   );
 }
