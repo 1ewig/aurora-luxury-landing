@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { type OrderData } from "@/stores/useAdminStore";
+import { Button } from "@/components/ui/Button";
 import { OrderStatusBadge } from "@/components/ui/OrderStatusBadge";
 import { useBodyScrollLock } from "@/hooks/ui/useBodyScrollLock";
 
@@ -362,13 +363,15 @@ export function OrderDetailModal({
           <span className="text-[11px] text-text-muted font-mono">
             Placed {formattedDate}
           </span>
-          <button
+          <Button
             type="button"
             onClick={onClose}
-            className="px-5 py-2 rounded-xl text-xs font-semibold bg-bg-primary hover:bg-border-subtle text-text-primary border border-border-subtle transition-colors cursor-pointer"
+            variant="ghost"
+            size="sm"
+            className="bg-bg-primary hover:bg-border-subtle text-text-primary border-border-subtle"
           >
-            Done
-          </button>
+            Close
+          </Button>
         </div>
 
       </div>
