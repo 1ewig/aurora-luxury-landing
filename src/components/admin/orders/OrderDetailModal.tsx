@@ -359,7 +359,7 @@ export function OrderDetailModal({
         </div>
 
         {/* ================= FOOTER ================= */}
-        <div className="flex-shrink-0 px-5 sm:px-6 py-3.5 border-t border-border-subtle bg-bg-secondary flex items-center justify-between">
+        <div className="flex-shrink-0 px-5 sm:px-6 py-3.5 border-t border-border-subtle bg-bg-secondary flex items-center justify-between gap-3">
           <span className="text-[11px] text-text-muted font-mono">
             Placed {formattedDate}
           </span>
@@ -368,7 +368,7 @@ export function OrderDetailModal({
             onClick={onClose}
             variant="ghost"
             size="sm"
-            className="bg-bg-primary hover:bg-border-subtle text-text-primary border-border-subtle"
+            className="bg-bg-primary hover:bg-border-subtle text-text-primary border-border-subtle shrink-0 ml-auto"
           >
             Close
           </Button>

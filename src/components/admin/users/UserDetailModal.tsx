@@ -361,8 +361,8 @@ export function UserDetailModal({
         </div>
 
         {/* ================= FOOTER ================= */}
-        <div className="flex-shrink-0 px-5 sm:px-6 py-3.5 border-t border-border-subtle bg-bg-secondary flex items-center justify-between gap-3">
-          {isAdmin ? (
+        <div className="flex-shrink-0 px-5 sm:px-6 py-3.5 border-t border-border-subtle bg-bg-secondary flex items-center justify-end gap-3">
+          {isAdmin && (
             <Button
               type="button"
               onClick={() => onDelete(user)}
@@ -372,8 +372,6 @@ export function UserDetailModal({
             >
               Delete User
             </Button>
-          ) : (
-            <div />
           )}
 
           <Button

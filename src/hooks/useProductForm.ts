@@ -46,6 +46,8 @@ export function useProductForm(onSuccess: () => void) {
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
 
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   /*
    * JSON-serialized snapshot of the initial form state.
    * Compared against currentSnapshot() to determine if the user
@@ -73,6 +75,7 @@ export function useProductForm(onSuccess: () => void) {
   }
 
   const hasChanges = currentSnapshot() !== initialSnapshot;
+  const totalStock = formSizes.reduce((acc, s) => acc + (Number(s.stock) || 0), 0);
 
   /*
    * Auto-generate slug from name when creating a new product.
@@ -91,6 +94,7 @@ export function useProductForm(onSuccess: () => void) {
 
   /** Populates the form for editing or resets to defaults for creation. */
   function resetForm(product?: ProductData | null) {
+    setErrorMessage(null);
     if (product) {
       setFormId(product.id);
       setFormName(product.name);
@@ -179,6 +183,7 @@ export function useProductForm(onSuccess: () => void) {
     if (!files || files.length === 0) return;
 
     setUploading(true);
+    setErrorMessage(null);
     try {
       const uploadPromises = Array.from(files).map(async (file) => {
         const idForPath = formId.trim() || "temp";
@@ -204,19 +209,28 @@ export function useProductForm(onSuccess: () => void) {
         });
       }
     } catch (err: any) {
-      alert(`Upload failed: ${err.message}`);
+      setErrorMessage(`Upload failed: ${err.message || "Unknown error"}`);
     } finally {
       setUploading(false);
     }
   }
 
   async function handleSave(editingProduct: ProductData | null) {
+    setErrorMessage(null);
     if (!formId.trim()) {
-      alert("Product ID is required");
+      setErrorMessage("Product ID is required (e.g. p15)");
+      return;
+    }
+    if (!formName.trim()) {
+      setErrorMessage("Product Name is required");
+      return;
+    }
+    if (!formPrice || isNaN(parseFloat(formPrice)) || parseFloat(formPrice) < 0) {
+      setErrorMessage("Please enter a valid non-negative price");
       return;
     }
     if (!mainImageUrl) {
-      alert("Main image is required");
+      setErrorMessage("Main product image is required. Please upload an image.");
       return;
     }
 
@@ -242,7 +256,7 @@ export function useProductForm(onSuccess: () => void) {
       await saveMutation.mutateAsync({ product: payload, id: editingProduct?.id });
       onSuccess();
     } catch (err: any) {
-      alert(err.message || "Failed to save product");
+      setErrorMessage(err.message || "Failed to save product");
     } finally {
       setSaving(false);
     }
@@ -252,6 +266,7 @@ export function useProductForm(onSuccess: () => void) {
     if (formDetailInput.trim()) {
       setFormDetails((prev) => [...prev, formDetailInput.trim()]);
       setFormDetailInput("");
+      setErrorMessage(null);
     }
   }
 
@@ -264,14 +279,38 @@ export function useProductForm(onSuccess: () => void) {
     if (newSizeName.trim()) {
       const stock = parseInt(newSizeStock, 10);
       if (isNaN(stock) || stock < 0) {
-        alert("Invalid stock level");
+        setErrorMessage("Invalid stock level: please provide a non-negative number");
         return;
       }
+      setErrorMessage(null);
       setFormSizes((prev) => {
         const filtered = prev.filter((s) => s.size.toUpperCase() !== newSizeName.trim().toUpperCase());
         return [...filtered, { size: newSizeName.trim().toUpperCase(), stock }];
       });
       setNewSizeName("");
+    }
+  }
+
+  function handleAddPresetSizes(preset: "apparel" | "one-size" | "numeric") {
+    setErrorMessage(null);
+    if (preset === "apparel") {
+      setFormSizes([
+        { size: "XS", stock: 10 },
+        { size: "S", stock: 10 },
+        { size: "M", stock: 10 },
+        { size: "L", stock: 10 },
+        { size: "XL", stock: 10 },
+      ]);
+    } else if (preset === "one-size") {
+      setFormSizes([{ size: "ONE SIZE", stock: 20 }]);
+    } else if (preset === "numeric") {
+      setFormSizes([
+        { size: "36", stock: 5 },
+        { size: "38", stock: 10 },
+        { size: "40", stock: 10 },
+        { size: "42", stock: 10 },
+        { size: "44", stock: 5 },
+      ]);
     }
   }
 
@@ -297,10 +336,14 @@ export function useProductForm(onSuccess: () => void) {
     saving,
     isReady,
     hasChanges,
+    totalStock,
+    errorMessage,
+    setErrorMessage,
     resetForm,
     handleUpload,
     handleSave,
     handleAddDetail,
     handleAddSize,
+    handleAddPresetSizes,
   };
 }
