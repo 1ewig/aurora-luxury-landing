@@ -111,14 +111,14 @@ export function Navbar() {
             className="flex items-center justify-between h-16 md:h-20 px-6 md:px-12 lg:px-20 max-w-[1400px] mx-auto"
           >
             {/* Logo */}
-            <Link
-              href="/"
+            <SectionLink
+              href="/#hero"
               prefetch={false}
               aria-label="Aurora — return to homepage"
               className="font-display font-black text-xl tracking-[0.15em] uppercase text-text-primary hover:text-accent-primary transition-colors"
             >
               Aurora
-            </Link>
+            </SectionLink>
 
             {/* Desktop Nav Links */}
             <ul
