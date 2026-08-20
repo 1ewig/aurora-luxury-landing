@@ -50,12 +50,12 @@ export function Button({
 }: ButtonProps) {
   return (
     <motion.button
-      whileHover={disabled ? undefined : { scale: 1.02 }}
-      whileTap={disabled ? undefined : { scale: 0.97 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      whileHover={disabled ? undefined : { scale: 1.04 }}
+      whileTap={disabled ? undefined : { scale: 0.96 }}
+      transition={{ type: "spring", stiffness: 400, damping: 17 }}
       disabled={disabled}
       className={cn(
-        "rounded-full font-medium transition-all duration-300 inline-flex items-center justify-center gap-2 select-none focus-visible:outline-2 focus-visible:outline-accent-primary focus-visible:outline-offset-2",
+        "rounded-full font-medium transition-colors duration-300 inline-flex items-center justify-center gap-2 select-none focus-visible:outline-2 focus-visible:outline-accent-primary focus-visible:outline-offset-2",
         disabled
           ? "opacity-50 cursor-not-allowed"
           : "cursor-pointer",

@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { type OrderData } from "@/stores/useAdminStore";
-import { Button } from "@/components/ui/Button";
 import { OrderStatusBadge } from "@/components/ui/OrderStatusBadge";
 import { useBodyScrollLock } from "@/hooks/ui/useBodyScrollLock";
 
@@ -359,19 +358,17 @@ export function OrderDetailModal({
         </div>
 
         {/* ================= FOOTER ================= */}
-        <div className="flex-shrink-0 px-5 sm:px-6 py-3.5 border-t border-border-subtle bg-bg-secondary flex items-center justify-between gap-3">
+        <div className="flex-shrink-0 px-5 sm:px-6 py-4 border-t border-border-subtle bg-bg-secondary flex items-center justify-between gap-3">
           <span className="text-[11px] text-text-muted font-mono">
             Placed {formattedDate}
           </span>
-          <Button
+          <button
             type="button"
             onClick={onClose}
-            variant="ghost"
-            size="sm"
-            className="bg-bg-primary hover:bg-border-subtle text-text-primary border-border-subtle text-xs sm:text-sm px-4 sm:px-5 py-2 sm:py-2.5 shrink-0 ml-auto"
+            className="px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider border border-border-subtle hover:border-text-primary bg-white text-text-primary transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-accent-primary focus-visible:outline-offset-2 shrink-0 ml-auto"
           >
             Close
-          </Button>
+          </button>
         </div>
 
       </div>
