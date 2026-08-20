@@ -5,6 +5,7 @@
  */
 
 import Link from "next/link";
+import { SectionLink } from "@/components/ui/SectionLink";
 import { getCachedCategories } from "@/app/api/categories/route";
 import { categoryDataList } from "@/data/categories";
 
@@ -139,12 +140,12 @@ export async function Footer() {
               </h3>
               <ul role="list" className="space-y-4">
                 <li>
-                  <Link
+                  <SectionLink
                     href="/#story"
                     className="text-sm text-text-secondary hover:text-text-primary transition-colors"
                   >
                     Our Story
-                  </Link>
+                  </SectionLink>
                 </li>
                 <li>
                   <Link
@@ -163,12 +164,12 @@ export async function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link
+                  <SectionLink
                     href="/#newsletter"
                     className="text-sm text-text-secondary hover:text-text-primary transition-colors"
                   >
                     Contact & Support
-                  </Link>
+                  </SectionLink>
                 </li>
               </ul>
             </div>

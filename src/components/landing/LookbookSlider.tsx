@@ -72,7 +72,6 @@ export function LookbookSlider({ slides }: LookbookSliderProps) {
 
   return (
     <section
-      id="lookbook"
       aria-labelledby="lookbook-heading"
       aria-roledescription="carousel"
       className="relative w-full overflow-hidden bg-bg-ink"

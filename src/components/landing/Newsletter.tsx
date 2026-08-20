@@ -24,7 +24,6 @@ export function Newsletter({ email, setEmail, submitted, loading, error, handleS
 
   return (
     <section
-      id="newsletter"
       aria-labelledby="newsletter-heading"
       className="py-20 px-6 md:px-20 bg-bg-ink"
     >

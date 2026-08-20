@@ -13,9 +13,10 @@ import { useEffect, useRef, useState, ReactNode } from "react";
 interface LazySectionProps {
   children: ReactNode;
   height?: string; // height CSS class to prevent layout shifts (CLS) on lazy load
+  id?: string; // anchor id rendered on the always-present wrapper so section links resolve before mount
 }
 
-export function LazySection({ children, height = "min-h-[400px]" }: LazySectionProps) {
+export function LazySection({ children, height = "min-h-[400px]", id }: LazySectionProps) {
   const [inView, setInView] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -47,7 +48,7 @@ export function LazySection({ children, height = "min-h-[400px]" }: LazySectionP
   }, []);
 
   return (
-    <div ref={ref} className={inView ? "" : height}>
+    <div ref={ref} id={id} className={`${inView ? "" : height} scroll-mt-20`}>
       {inView ? children : null}
     </div>
   );

@@ -12,6 +12,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { EyebrowLabel } from "@/components/ui/EyebrowLabel";
 import { AnimatedText } from "@/components/ui/AnimatedText";
+import { scrollToSection } from "@/utils/scrollToSection";
 import type { Product } from "@/data/products";
 import { CascadeCards } from "./ui/CascadeCards";
 
@@ -122,9 +123,7 @@ export function Hero({ products }: HeroProps) {
               size="lg"
               className="whitespace-nowrap w-full px-3.5 py-3 text-[12px] min-[380px]:px-4 min-[380px]:text-[13px] sm:w-auto sm:px-9 sm:py-4 sm:text-base"
               onClick={() => {
-                document
-                  .getElementById("story")
-                  ?.scrollIntoView({ behavior: "smooth" });
+                scrollToSection("story");
               }}
             >
               Read the Story →

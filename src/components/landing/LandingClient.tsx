@@ -83,24 +83,24 @@ export default function LandingClient({ initialData }: LandingClientProps) {
       <LazySection height="min-h-[600px]">
         <SignaturePieces products={signatureProducts} />
       </LazySection>
-      <LazySection height="min-h-[600px]">
+      <LazySection height="min-h-[600px]" id="collection">
         <FeaturedCollection categories={dailyCategories} />
       </LazySection>
       <LazySection height="min-h-[50vh]">
         <MaterialIndex materials={materials} />
       </LazySection>
       {slides.length > 0 && (
-        <LazySection height="min-h-[60vh]">
+        <LazySection height="min-h-[60vh]" id="lookbook">
           <LookbookSlider slides={slides} />
         </LazySection>
       )}
-      <LazySection height="min-h-[50vh]">
+      <LazySection height="min-h-[50vh]" id="story">
         <DesignerStory imageUrl={designerImage} />
       </LazySection>
       <LazySection height="min-h-[320px]">
         <PressClientNotes />
       </LazySection>
-      <LazySection height="min-h-[400px]">
+      <LazySection height="min-h-[400px]" id="newsletter">
         <Newsletter {...newsletter} />
       </LazySection>
     </main>

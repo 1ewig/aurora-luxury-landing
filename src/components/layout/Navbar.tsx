@@ -13,6 +13,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { navLinks } from "@/data/navigation";
+import { SectionLink } from "@/components/ui/SectionLink";
 import { useCartStore } from "@/stores/useCartStore";
 import { useNavbarScroll } from "@/hooks/ui/useNavbarScroll";
 import { navbarReveal } from "@/animations/variants";
@@ -126,13 +127,13 @@ export function Navbar() {
             >
               {navLinks.map((link) => (
                 <li key={link.href + link.label}>
-                  <Link
+                  <SectionLink
                     href={link.href}
                     prefetch={false}
                     className="text-sm font-medium text-text-primary hover:text-accent-primary transition-colors tracking-wide"
                   >
                     {link.label}
-                  </Link>
+                  </SectionLink>
                 </li>
               ))}
             </ul>

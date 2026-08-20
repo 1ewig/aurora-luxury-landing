@@ -7,7 +7,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
+import { SectionLink } from "@/components/ui/SectionLink";
 import { staggerContainer, menuItemVariant } from "@/animations/variants";
 
 interface MobileMenuProps {
@@ -54,13 +54,13 @@ export function MobileMenu({
           >
             {navLinks.map((link) => (
               <motion.li key={link.label} variants={menuItemVariant}>
-                <Link
+                <SectionLink
                   href={link.href}
                   onClick={onClose}
                   className="text-5xl font-black text-text-inverted hover:text-accent-primary transition-colors tracking-tight leading-none block"
                 >
                   {link.label}
-                </Link>
+                </SectionLink>
               </motion.li>
             ))}
             

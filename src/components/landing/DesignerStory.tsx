@@ -20,7 +20,6 @@ interface DesignerStoryProps {
 export function DesignerStory({ imageUrl }: DesignerStoryProps) {
   return (
     <section
-      id="story"
       aria-labelledby="story-heading"
       className="grid grid-cols-1 lg:grid-cols-2 min-h-[90vh] bg-bg-primary"
     >
