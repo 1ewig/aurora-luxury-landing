@@ -17,6 +17,7 @@ import { useCartStore } from "@/stores/useCartStore";
 import { useNavbarScroll } from "@/hooks/ui/useNavbarScroll";
 import { navbarReveal } from "@/animations/variants";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { AnnouncementBar } from "./AnnouncementBar";
 
 const ConfirmDialog = dynamic(() => import("@/components/ui/ConfirmDialog").then((m) => m.ConfirmDialog), { ssr: false });
 const NavbarProfileMenu = dynamic(() => import("./NavbarProfileMenu").then((m) => m.NavbarProfileMenu), { ssr: false });
@@ -71,7 +72,7 @@ export function Navbar() {
   const loading = useAuthStore((s) => s.loading);
   const signOut = useAuthStore((s) => s.signOut);
 
-  const { navBg, navBorder, navBlur } = useNavbarScroll();
+  const { navBg, navBorder, navBlur, showBanner } = useNavbarScroll();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -93,10 +94,8 @@ export function Navbar() {
         animate="visible"
         className="fixed top-0 inset-x-0 z-50"
       >
-        {/* Understated Announcement Bar */}
-        <div className="bg-bg-ink text-text-inverted text-[10px] tracking-[0.18em] uppercase py-2 text-center px-4 font-medium border-b border-white/5">
-          Complimentary worldwide shipping on orders over $500.
-        </div>
+        {/* Understated Announcement Bar — hides on scroll down, reappears on scroll up */}
+        <AnnouncementBar visible={showBanner} />
         <motion.div
           style={{
             backgroundColor: navBg,
@@ -146,7 +145,7 @@ export function Navbar() {
                 whileHover={{ scale: 1.08 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                className="p-2 rounded-full border border-border-medium hover:bg-border-subtle/50 transition-colors text-text-primary cursor-pointer"
+                className="w-9 h-9 p-2 rounded-full border border-border-medium hover:bg-text-primary hover:text-text-inverted hover:border-text-primary transition-colors duration-300 text-text-primary flex items-center justify-center cursor-pointer"
               >
                 <BagIcon count={count} />
               </motion.button>
@@ -167,7 +166,7 @@ export function Navbar() {
                     whileHover={{ scale: 1.08 }}
                     whileTap={{ scale: 0.95 }}
                     transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                    className="p-2 rounded-full border border-border-medium hover:bg-border-subtle/50 transition-colors text-text-primary flex items-center justify-center w-9 h-9 cursor-pointer"
+                    className="w-9 h-9 p-2 rounded-full border border-border-medium hover:bg-text-primary hover:text-text-inverted hover:border-text-primary transition-colors duration-300 text-text-primary flex items-center justify-center cursor-pointer"
                   >
                     <UserIcon />
                   </motion.button>
@@ -180,13 +179,19 @@ export function Navbar() {
                   />
                 </div>
               ) : (
-                <Link
-                  href="/login"
-                  prefetch={false}
-                  className="px-5 py-2 rounded-full text-sm font-medium text-text-primary border border-text-primary hover:bg-text-primary hover:text-text-inverted transition-all duration-300 tracking-wide"
+                <motion.div
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 >
-                  Sign In
-                </Link>
+                  <Link
+                    href="/login"
+                    prefetch={false}
+                    className="inline-block px-5 py-2 rounded-full text-sm font-medium text-text-primary border border-text-primary hover:bg-text-primary hover:text-text-inverted transition-colors duration-300 tracking-wide select-none"
+                  >
+                    Sign In
+                  </Link>
+                </motion.div>
               )}
               
               <button

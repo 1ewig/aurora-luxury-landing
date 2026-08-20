@@ -9,7 +9,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { Button } from "@/components/ui/Button";
 import { type ProductData } from "@/stores/useAdminStore";
 import { type useProductForm } from "@/hooks/useProductForm";
 import { useBodyScrollLock } from "@/hooks/ui/useBodyScrollLock";
@@ -226,30 +225,28 @@ export function ProductFormModal({
           </div>
 
           {/* ================= FOOTER ================= */}
-          <div className="flex-shrink-0 px-5 sm:px-6 py-3.5 border-t border-border-subtle bg-bg-secondary flex items-center justify-end gap-3">
+          <div className="flex-shrink-0 px-5 sm:px-6 py-4 border-t border-border-subtle bg-bg-secondary flex items-center justify-end gap-3">
             {editingProduct && onDelete ? (
-              <Button
+              <button
                 type="button"
                 onClick={onDelete}
                 disabled={deleting || form.saving || form.uploading}
-                variant="ghost"
-                size="sm"
-                className="border-error text-error hover:bg-error hover:text-white hover:border-error text-xs sm:text-sm px-4 sm:px-5 py-2 sm:py-2.5 shrink-0"
+                className="px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider border border-error text-error hover:bg-error hover:text-white hover:border-error transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-accent-primary focus-visible:outline-offset-2 disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
               >
                 {deleting ? "Deleting..." : "Delete Product"}
-              </Button>
+              </button>
             ) : (
               <span className="text-[11px] text-text-muted font-mono hidden sm:inline mr-auto">
                 {form.hasChanges ? "Unsaved changes detected" : "All fields up to date"}
               </span>
             )}
 
-            <Button
+            <button
               type="submit"
               disabled={!form.hasChanges || form.uploading || form.saving || deleting}
-              variant="gold"
-              size="sm"
-              className={!editingProduct ? "w-full sm:w-auto text-xs sm:text-sm py-2 sm:py-2.5" : "text-xs sm:text-sm px-4 sm:px-5 py-2 sm:py-2.5 shrink-0"}
+              className={`px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider bg-accent-primary text-white border border-accent-primary hover:bg-accent-vivid hover:border-accent-vivid transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-accent-primary focus-visible:outline-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${
+                !editingProduct ? "w-full sm:w-auto" : "shrink-0"
+              }`}
             >
               {form.uploading ? (
                 <span className="flex items-center gap-1.5">
@@ -270,7 +267,7 @@ export function ProductFormModal({
               ) : (
                 editingProduct ? "Save Changes" : "Create Product"
               )}
-            </Button>
+            </button>
           </div>
         </form>
       </div>

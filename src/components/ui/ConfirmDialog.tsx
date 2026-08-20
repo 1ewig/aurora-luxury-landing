@@ -7,7 +7,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { Button } from "./Button";
 import { useBodyScrollLock } from "@/hooks/ui/useBodyScrollLock";
 
 interface ConfirmDialogProps {
@@ -99,25 +98,21 @@ export function ConfirmDialog({
         </div>
 
         {/* ================= FOOTER ================= */}
-        <div className="flex-shrink-0 px-5 sm:px-6 py-3.5 border-t border-border-subtle bg-bg-secondary flex items-center justify-end gap-2.5">
-          <Button
+        <div className="flex-shrink-0 px-5 sm:px-6 py-4 border-t border-border-subtle bg-bg-secondary flex items-center justify-end gap-3">
+          <button
             type="button"
             onClick={onCancel}
             disabled={disabled || loading}
-            variant="ghost"
-            size="sm"
-            className="bg-bg-primary hover:bg-border-subtle text-text-primary border-border-subtle"
+            className="px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider border border-border-subtle hover:border-text-primary bg-white text-text-primary transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-accent-primary focus-visible:outline-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {cancelLabel}
-          </Button>
+          </button>
 
-          <Button
+          <button
             type="button"
             onClick={onConfirm}
             disabled={disabled || loading}
-            variant="ghost"
-            size="sm"
-            className="border-error text-error hover:bg-error hover:text-white hover:border-error"
+            className="px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider border border-error text-error hover:bg-error hover:text-white hover:border-error transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-accent-primary focus-visible:outline-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <span className="flex items-center gap-2">
@@ -130,7 +125,7 @@ export function ConfirmDialog({
             ) : (
               confirmLabel
             )}
-          </Button>
+          </button>
         </div>
 
       </div>

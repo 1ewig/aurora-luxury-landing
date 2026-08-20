@@ -105,12 +105,7 @@ export function Hero({ products }: HeroProps) {
           transition={{ duration: 0.8, delay: 1.1, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="flex flex-row gap-2 sm:gap-4 mt-8"
         >
-          <motion.div
-            whileHover={{ scale: 1.03, y: -2 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 400, damping: 20 }}
-            className="flex-1 min-w-0 sm:flex-none"
-          >
+          <div className="flex-1 min-w-0 sm:flex-none">
             <Link href="/products" prefetch={false}>
               <Button
                 variant="filled"
@@ -120,13 +115,8 @@ export function Hero({ products }: HeroProps) {
                 Shop the Collection
               </Button>
             </Link>
-          </motion.div>
-          <motion.div
-            whileHover={{ scale: 1.03, y: -2 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 400, damping: 20 }}
-            className="flex-1 min-w-0 sm:flex-none"
-          >
+          </div>
+          <div className="flex-1 min-w-0 sm:flex-none">
             <Button
               variant="ghost"
               size="lg"
@@ -139,7 +129,7 @@ export function Hero({ products }: HeroProps) {
             >
               Read the Story →
             </Button>
-          </motion.div>
+          </div>
         </motion.div>
       </motion.div>
 
