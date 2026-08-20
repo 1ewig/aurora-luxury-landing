@@ -17,6 +17,7 @@ import { useCartStore } from "@/stores/useCartStore";
 import { useNavbarScroll } from "@/hooks/ui/useNavbarScroll";
 import { navbarReveal } from "@/animations/variants";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { AnnouncementBar } from "./AnnouncementBar";
 
 const ConfirmDialog = dynamic(() => import("@/components/ui/ConfirmDialog").then((m) => m.ConfirmDialog), { ssr: false });
 const NavbarProfileMenu = dynamic(() => import("./NavbarProfileMenu").then((m) => m.NavbarProfileMenu), { ssr: false });
@@ -71,7 +72,7 @@ export function Navbar() {
   const loading = useAuthStore((s) => s.loading);
   const signOut = useAuthStore((s) => s.signOut);
 
-  const { navBg, navBorder, navBlur } = useNavbarScroll();
+  const { navBg, navBorder, navBlur, showBanner } = useNavbarScroll();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -93,10 +94,8 @@ export function Navbar() {
         animate="visible"
         className="fixed top-0 inset-x-0 z-50"
       >
-        {/* Understated Announcement Bar */}
-        <div className="bg-bg-ink text-text-inverted text-[10px] tracking-[0.18em] uppercase py-2 text-center px-4 font-medium border-b border-white/5">
-          Complimentary worldwide shipping on orders over $500.
-        </div>
+        {/* Understated Announcement Bar — hides on scroll down, reappears on scroll up */}
+        <AnnouncementBar visible={showBanner} />
         <motion.div
           style={{
             backgroundColor: navBg,
