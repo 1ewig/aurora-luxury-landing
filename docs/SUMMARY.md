@@ -111,7 +111,7 @@ Every feature follows a strict 4-layer pipeline (documented in `docs/CODING_STAN
 
 ### 3.6 Design, motion & content conventions
 
-- **House motion style:** ~0.8 s fade/slide entrances with `easeOutQuart` easing; index-staggered variants factories (0.07–0.12 s delay steps); spring presets for interactive elements (`Button` whileHover 1.02 / whileTap 0.97); `AnimatePresence` for drawers and modals; below-fold sections use `next/dynamic` + `LazySection` (IntersectionObserver, 300 px rootMargin).
+- **House motion style:** ~0.8 s fade/slide entrances with `easeOutQuart` easing; index-staggered variants factories (0.07–0.12 s delay steps); spring presets for interactive elements (`Button` whileHover 1.04 / whileTap 0.96, stiffness 400 / damping 17); `AnimatePresence` for drawers and modals; below-fold sections use `next/dynamic` + `LazySection` (IntersectionObserver, 300 px rootMargin).
 - **Typography/brand:** Inter (body) + Playfair Display (headings) via `next/font` CSS variables; Tailwind 4 `@theme` tokens reference them; editorial cream/black palette with `#E9C8A0` accent (favicon monogram).
 - **Money formatting:** `formatCurrency()` renders whole dollars (`Intl.NumberFormat` en-US, zero fraction digits) — luxury presentation, not cents.
 - **Content model:** catalog/lookbook/editorial/materials live in the DB (seeded from `src/data/*`); only navigation links and testimonials are static runtime data.
