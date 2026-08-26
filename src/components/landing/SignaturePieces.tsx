@@ -44,8 +44,7 @@ export function SignaturePieces({ products }: SignaturePiecesProps) {
           </h2>
         </div>
         <p className="text-text-secondary font-light text-sm md:text-base max-w-sm mt-4 md:mt-0 leading-relaxed text-center md:text-left">
-          Core wardrobe elements designed in silence, manufactured in limited
-          batches, and crafted to endure.
+          Core wardrobe foundations designed in quiet solitude and crafted to endure.
         </p>
       </motion.div>
 

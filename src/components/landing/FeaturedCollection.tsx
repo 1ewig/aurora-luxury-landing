@@ -43,7 +43,7 @@ export function FeaturedCollection({ categories }: FeaturedCollectionProps) {
           </h2>
         </div>
         <p className="text-text-secondary font-light text-sm md:text-base max-w-sm mt-4 md:mt-0 leading-relaxed text-center md:text-left">
-          A highly curated capsule of seasonal essentials, designed for versatility, comfort, and uncompromising aesthetic longevity.
+          Curated seasonal capsules designed for versatile elegance and lasting ease.
         </p>
       </motion.div>
 

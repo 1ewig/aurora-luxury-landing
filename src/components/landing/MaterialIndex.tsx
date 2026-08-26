@@ -41,7 +41,7 @@ export function MaterialIndex({ materials }: MaterialIndexProps) {
           </h2>
         </div>
         <p className="text-text-secondary font-light text-sm md:text-base max-w-sm mt-4 md:mt-0 leading-relaxed text-center md:text-left">
-          We justify our pricing through touch and longevity. Every piece is defined by the noble fiber from which it was spun.
+          Noble heritage fabrics chosen with intention and crafted to age with grace.
         </p>
       </motion.div>
 
