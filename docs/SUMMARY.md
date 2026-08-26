@@ -16,7 +16,7 @@
   - **Security:** RBAC role gates on every admin endpoint (401/403), DB-backed rate limiting (auth endpoints, newsletter, checkout), CSRF protection, secure cookies in production, input sanitization (HTML-strip + length caps), JSON-LD XSS escaping, parameterized SQL everywhere, whitelisted sort/status/role enums.
   - **Performance:** `use cache` directive-based caching (60s–60min TTLs), `json_agg` single-roundtrip queries (no N+1), parallel dashboard queries, client-side React Query caching (5 min stale / 10 min GC), AVIF/WebP image optimization, code-split below-fold landing sections.
   - **Compliance/traceability:** full audit log (`audit_logs`) of every admin mutation with old→new diffs; idempotent payment event ledger.
-- **Operational metrics of note:** 15 public tables + 5 `better_auth` tables; 17 pages; 20 API route handlers; 102 components; 24 test files; two cron jobs (reservation + rate-limit cleanup).
+- **Operational metrics of note:** 15 public tables + 5 `better_auth` tables; 17 pages; 20 API route handlers; 103 components; 24 test files; two cron jobs (reservation + rate-limit cleanup).
 
 ## 2. Technical Stack & Infrastructure
 
@@ -137,8 +137,8 @@ aurora/
 │  │  ├─ (user)/                  ← profile + profile/orders; layout gates auth client-side
 │  │  ├─ (admin)/admin/           ← layout (sidebar shell) + dashboard/users/orders/inventory/activity
 │  │  └─ api/                     ← 20 route handlers (see §7)
-│  ├─ components/                 ← 102 presentational + orchestrator components
-│  │  ├─ ui/                      ← generic: Button, ProductCard, CartDrawer, Pagination,
+│  ├─ components/                 ← 103 presentational + orchestrator components
+│  │  ├─ ui/                      ← generic: Button, ProductCard, FeatureCard, CartDrawer, Pagination,
 │  │  │                            AdminSidebar, LazySection, ConfirmDialog, badges, skeletons
 │  │  ├─ layout/                  ← Navbar(+profile menu), AnnouncementBar, MobileMenu, Footer
 │  │  ├─ landing/ story/          ← storefront sections (client orchestrators + sections)
