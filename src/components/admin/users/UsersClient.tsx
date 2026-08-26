@@ -9,15 +9,23 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import dynamic from "next/dynamic";
 import { Pagination } from "@/components/ui/Pagination";
 import { AdminHeaderPanel } from "@/components/ui/AdminHeaderPanel";
-import { UserDetailModal } from "./UserDetailModal";
 import { UsersSearchFilters } from "./UsersSearchFilters";
 import { UsersTable } from "./UsersTable";
-import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { UsersSkeleton } from "./UsersSkeleton";
 import { useUsersManagement } from "@/hooks/useUsersManagement";
 import type { SortKey } from "@/hooks/useUsersManagement";
+
+const UserDetailModal = dynamic(
+  () => import("./UserDetailModal").then((m) => m.UserDetailModal),
+  { ssr: false }
+);
+const ConfirmDialog = dynamic(
+  () => import("@/components/ui/ConfirmDialog").then((m) => m.ConfirmDialog),
+  { ssr: false }
+);
 
 export type { UserRow, SortKey, FilterVerified } from "@/hooks/useUsersManagement";
 
