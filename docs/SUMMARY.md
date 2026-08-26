@@ -130,12 +130,13 @@ aurora/
 │  │  ├─ providers.tsx            ← React Query client (5min/10min/refocus off)
 │  │  ├─ globals.css / icon.svg   ← Tailwind 4 theme tokens; inline "A" monogram favicon
 │  │  ├─ robots.ts / sitemap.ts   ← SEO metadata routes (sitemap uses `use cache`, 1 h)
+│  │  ├─ global-error.tsx / not-found.tsx ← root error boundary + 404 fallback
 │  │  ├─ (store)/                 ← public storefront group: layout (Navbar/CartDrawer/Footer),
 │  │  │                            landing, story, products(+[slug], +category/[category]),
-│  │  │                            checkout(+success), not-found
+│  │  │                            checkout(+success), not-found, error
 │  │  ├─ (auth)/                  ← login, register, verify, reset-password (all noindex)
 │  │  ├─ (user)/                  ← profile + profile/orders; layout gates auth client-side
-│  │  ├─ (admin)/admin/           ← layout (sidebar shell) + dashboard/users/orders/inventory/activity
+│  │  ├─ (admin)/admin/           ← layout (sidebar shell) + dashboard/users/orders/inventory/activity, error, loading
 │  │  └─ api/                     ← 20 route handlers (see §7)
 │  ├─ components/                 ← 103 presentational + orchestrator components
 │  │  ├─ ui/                      ← generic: Button, ProductCard, FeatureCard, CartDrawer, Pagination,

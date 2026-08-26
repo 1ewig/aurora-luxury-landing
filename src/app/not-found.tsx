@@ -1,16 +1,15 @@
 /**
- * Aurora — src/app/(store)/not-found.tsx
+ * Aurora — src/app/not-found.tsx
  *
- * Custom luxury 404 page for the store route group.
+ * Global 404 fallback page for unmatched top-level routes outside specific route groups.
  */
 
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 
-/** Custom 404 not-found page for the store route group. */
-export default function NotFound() {
+export default function RootNotFound() {
   return (
-    <div className="min-h-[75vh] flex flex-col items-center justify-center bg-bg-primary px-6 py-20 text-center">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-bg-primary px-6 py-20 text-center">
       <div className="max-w-md w-full space-y-6">
         {/* Eyebrow badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-secondary/60 border border-accent-primary/40 text-accent-vivid text-xs font-bold uppercase tracking-[0.2em]">
@@ -23,7 +22,7 @@ export default function NotFound() {
             404
           </h1>
           <p className="text-text-secondary text-base sm:text-lg leading-relaxed">
-            The page or collection you are seeking is unavailable or has moved.
+            The requested destination could not be located across our storefront.
           </p>
         </div>
 
@@ -31,7 +30,7 @@ export default function NotFound() {
         <div className="pt-4">
           <Link href="/">
             <Button variant="filled" size="lg">
-              Return Home →
+              Return to Storefront →
             </Button>
           </Link>
         </div>
