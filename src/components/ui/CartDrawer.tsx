@@ -8,6 +8,7 @@
 
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/Button";
 import { useCartStore } from "@/stores/useCartStore";
 import { useBodyScrollLock } from "@/hooks/ui/useBodyScrollLock";
 import Image from "next/image";
@@ -190,9 +191,9 @@ export function CartDrawer() {
                   </span>
                 </div>
                 <Link href="/checkout" onClick={closeCart} className="block w-full">
-                  <button className="w-full py-4 rounded-full bg-bg-ink text-text-inverted font-medium hover:bg-text-primary transition-colors cursor-pointer">
+                  <Button variant="filled" size="lg" fullWidth>
                     Checkout →
-                  </button>
+                  </Button>
                 </Link>
                 <p className="text-center text-xs text-text-muted mt-3">
                   Complimentary shipping on orders over $500
