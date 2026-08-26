@@ -7,8 +7,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { EyebrowLabel } from "@/components/ui/EyebrowLabel";
+import { FeatureCard } from "@/components/ui/FeatureCard";
 import { fadeInUp, scaleIn, staggerContainer } from "@/animations/variants";
 import type { MaterialItem } from "@/data/materials";
 
@@ -57,44 +57,15 @@ export function MaterialIndex({ materials }: MaterialIndexProps) {
             key={material.name}
             variants={scaleIn}
           >
-            <article aria-label={material.name}>
-              <div
-                className="relative overflow-hidden rounded-[20px] bg-white cursor-pointer group transition-all duration-300 border border-transparent hover:border-accent-primary aspect-[3/4]"
-                style={{
-                  boxShadow: "0 2px 20px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04)",
-                }}
-              >
-                {/* Material Image */}
-                <div className="absolute inset-0 w-full h-full overflow-hidden">
-                  <div className="relative w-full h-full">
-                    <Image
-                      src={material.image}
-                      alt={`Macro texture close-up of ${material.name}`}
-                      fill
-                      quality={85}
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover object-center transition-transform duration-[800ms] ease-out group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/10 transition-opacity duration-300 group-hover:from-black/90" />
-                  </div>
-                </div>
-
-                {/* Content Overlay */}
-                <div className="absolute inset-0 flex flex-col justify-end p-8 text-white z-10">
-                  <div className="pr-16">
-                    <span className="text-xs font-semibold tracking-[0.2em] uppercase text-accent-primary mb-2 block opacity-90">
-                      {material.source}
-                    </span>
-                    <h3 className="font-display font-black text-2xl tracking-[0.05em] uppercase mb-1">
-                      {material.name}
-                    </h3>
-                    <p className="text-sm text-text-muted leading-relaxed max-h-0 group-hover:max-h-24 opacity-0 group-hover:opacity-100 group-hover:mt-3 transition-all duration-500 overflow-hidden">
-                      {material.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </article>
+            <FeatureCard
+              image={material.image}
+              alt={`Macro texture close-up of ${material.name}`}
+              eyebrow={material.source}
+              title={material.name}
+              description={material.description}
+              imagePosition="center"
+              showArrow={false}
+            />
           </motion.div>
         ))}
       </motion.div>
