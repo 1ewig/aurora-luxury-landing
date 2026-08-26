@@ -10,12 +10,17 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import dynamic from "next/dynamic";
 import { AdminHeaderPanel } from "@/components/ui/AdminHeaderPanel";
 import { Pagination } from "@/components/ui/Pagination";
 import { OrdersTable } from "./OrdersTable";
-import { OrderDetailModal } from "./OrderDetailModal";
 import { OrdersSkeleton } from "./OrdersSkeleton";
 import { useOrdersManagement } from "@/hooks/useOrdersManagement";
+
+const OrderDetailModal = dynamic(
+  () => import("./OrderDetailModal").then((m) => m.OrderDetailModal),
+  { ssr: false }
+);
 
 export function OrdersClient() {
   const searchParams = useSearchParams();

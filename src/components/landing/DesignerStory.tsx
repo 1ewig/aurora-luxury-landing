@@ -8,8 +8,9 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { EyebrowLabel } from "@/components/ui/EyebrowLabel";
 import Image from "next/image";
+import { EyebrowLabel } from "@/components/ui/EyebrowLabel";
+import { Button } from "@/components/ui/Button";
 import { staggerContainer, fadeInUp } from "@/animations/variants";
 
 interface DesignerStoryProps {
@@ -70,10 +71,9 @@ export function DesignerStory({ imageUrl }: DesignerStoryProps) {
           className="mt-10 border-t border-border-subtle pt-8 w-full flex justify-center lg:justify-start"
         >
           <Link href="/story">
-            <button className="px-6 py-3 rounded-full border border-border-medium text-text-primary text-sm font-medium hover:border-text-primary hover:bg-bg-secondary transition-colors cursor-pointer inline-flex items-center gap-2">
-              <span>Read The Full Story</span>
-              <span aria-hidden="true">→</span>
-            </button>
+            <Button variant="ghost" size="lg">
+              Read The Full Story →
+            </Button>
           </Link>
         </motion.div>
       </motion.div>

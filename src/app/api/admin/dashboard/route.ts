@@ -18,20 +18,11 @@ export async function GET() {
     const statsPromises = [
       pool.query(`
         SELECT
-          COALESCE(SUM(total), 0) as "totalSales",
-          COUNT(id) as "totalOrders"
+          COALESCE(SUM(CASE WHEN status <> 'cancelled' THEN total ELSE 0 END), 0) as "totalSales",
+          COUNT(CASE WHEN status <> 'cancelled' THEN 1 END) as "totalOrders",
+          COUNT(CASE WHEN status = 'pending' THEN 1 END) as "pendingCount",
+          COUNT(CASE WHEN status = 'shipped' THEN 1 END) as "shippedCount"
         FROM orders
-        WHERE status <> 'cancelled'
-      `),
-      pool.query(`
-        SELECT COUNT(id) as "pendingCount"
-        FROM orders
-        WHERE status = 'pending'
-      `),
-      pool.query(`
-        SELECT COUNT(id) as "shippedCount"
-        FROM orders
-        WHERE status = 'shipped'
       `),
       pool.query(`
         SELECT COUNT(*) as "lowStockCount"
@@ -56,14 +47,15 @@ export async function GET() {
       `),
     ];
 
-    const [salesRes, pendingRes, shippedRes, stockRes, recentRes] = await Promise.all(statsPromises);
+    const [ordersAggRes, stockRes, recentRes] = await Promise.all(statsPromises);
 
-    const totalSales = Number(salesRes.rows[0].totalSales);
-    const totalOrders = Number(salesRes.rows[0].totalOrders);
+    const aggRow = ordersAggRes.rows[0] || {};
+    const totalSales = Number(aggRow.totalSales || 0);
+    const totalOrders = Number(aggRow.totalOrders || 0);
     const averageOrderValue = totalOrders > 0 ? totalSales / totalOrders : 0;
-    const pendingCount = Number(pendingRes.rows[0].pendingCount);
-    const shippedCount = Number(shippedRes.rows[0].shippedCount);
-    const lowStockCount = Number(stockRes.rows[0].lowStockCount);
+    const pendingCount = Number(aggRow.pendingCount || 0);
+    const shippedCount = Number(aggRow.shippedCount || 0);
+    const lowStockCount = Number(stockRes.rows[0]?.lowStockCount || 0);
 
     const recentOrders = recentRes.rows.map(row => ({
       ...row,

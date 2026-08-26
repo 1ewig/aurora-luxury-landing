@@ -74,18 +74,26 @@ export async function GET(request: Request) {
       total: Number(row.total),
     }));
 
-    const allItemIds = [...new Set(orders.flatMap(o => (o.items as any[]).map(i => i.id)))];
-    if (allItemIds.length > 0) {
+    const missingImgIds = [
+      ...new Set(
+        orders.flatMap(o =>
+          (o.items as any[])
+            .filter(item => !item.image)
+            .map(item => item.id)
+        )
+      ),
+    ];
+    if (missingImgIds.length > 0) {
       const imgResult = await pool.query(
         `SELECT id, image FROM products WHERE id = ANY($1)`,
-        [allItemIds]
+        [missingImgIds]
       );
       const imageMap = Object.fromEntries(
         imgResult.rows.map(r => [r.id, r.image])
       );
       for (const order of orders) {
         for (const item of order.items as any[]) {
-          if (imageMap[item.id]) {
+          if (!item.image && imageMap[item.id]) {
             item.image = imageMap[item.id];
           }
         }

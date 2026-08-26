@@ -16,7 +16,7 @@
   - **Security:** RBAC role gates on every admin endpoint (401/403), DB-backed rate limiting (auth endpoints, newsletter, checkout), CSRF protection, secure cookies in production, input sanitization (HTML-strip + length caps), JSON-LD XSS escaping, parameterized SQL everywhere, whitelisted sort/status/role enums.
   - **Performance:** `use cache` directive-based caching (60s–60min TTLs), `json_agg` single-roundtrip queries (no N+1), parallel dashboard queries, client-side React Query caching (5 min stale / 10 min GC), AVIF/WebP image optimization, code-split below-fold landing sections.
   - **Compliance/traceability:** full audit log (`audit_logs`) of every admin mutation with old→new diffs; idempotent payment event ledger.
-- **Operational metrics of note:** 15 public tables + 5 `better_auth` tables; 17 pages; 20 API route handlers; 102 components; 24 test files; two cron jobs (reservation + rate-limit cleanup).
+- **Operational metrics of note:** 15 public tables + 5 `better_auth` tables; 17 pages; 20 API route handlers; 103 components; 24 test files; two cron jobs (reservation + rate-limit cleanup).
 
 ## 2. Technical Stack & Infrastructure
 
@@ -38,7 +38,7 @@
 | Motion/UI | Framer Motion 12.38, Embla Carousel 8.6 | Scroll animations, drawers, carousels | Shared presets in `src/animations/` (`easeOutQuart` house easing, spring presets, stagger variants) |
 | Email | Nodemailer 9 + Brevo (Sendinblue) SMTP | Verification, password reset, sign-up alert, order confirmation | Silently skips when SMTP env vars absent (dev); send failures are non-fatal except in Better Auth callbacks (which throw) |
 | Testing | Vitest 4.1.9 | Unit + API integration tests | `globals: true`, node env, `@` alias; all DB access mocked via `vi.mock` — no live DB needed; route handlers dynamically imported per-test; coverage via `bun run test:coverage` (istanbul provider — v8 is unsupported under Bun) |
-| Linting | ESLint 10 (flat config) | Code quality | `next/core-web-vitals` + `next/recommended`, `@typescript-eslint/parser` |
+| Linting | Oxlint | Code quality | High-performance Rust-based linter (`.oxlintrc.json` with TypeScript, React, Next.js, and Unicorn plugins) |
 | Analytics | `@vercel/analytics` | Web vitals tracking | Injected once in root layout |
 | Image pipeline | `sharp` 0.34.5 | Offline image optimization | `scripts/optimize-images.mjs`: JPG/PNG → WebP (q100, 2000px max) into `public/images/` |
 | Misc | `jsonwebtoken` 9, `server-only` | JWT bridge signing; server-only module enforcement | `'server-only'` import guard on server utilities (`db.ts`, `admin.ts`, etc.) |
@@ -137,8 +137,8 @@ aurora/
 │  │  ├─ (user)/                  ← profile + profile/orders; layout gates auth client-side
 │  │  ├─ (admin)/admin/           ← layout (sidebar shell) + dashboard/users/orders/inventory/activity
 │  │  └─ api/                     ← 20 route handlers (see §7)
-│  ├─ components/                 ← 102 presentational + orchestrator components
-│  │  ├─ ui/                      ← generic: Button, ProductCard, CartDrawer, Pagination,
+│  ├─ components/                 ← 103 presentational + orchestrator components
+│  │  ├─ ui/                      ← generic: Button, ProductCard, FeatureCard, CartDrawer, Pagination,
 │  │  │                            AdminSidebar, LazySection, ConfirmDialog, badges, skeletons
 │  │  ├─ layout/                  ← Navbar(+profile menu), AnnouncementBar, MobileMenu, Footer
 │  │  ├─ landing/ story/          ← storefront sections (client orchestrators + sections)
@@ -382,7 +382,7 @@ Future AI agents MUST follow these when modifying this codebase:
 - **Build hangs on open pg connections** — the pool's 1-second idle timeout exists specifically to let `next build` exit; don't "fix" it by removing it.
 - **Tests do NOT need a live DB** — all DB access is mocked via `vi.mock("@/utils/db")`; the route handlers are re-imported per test so env vars applied mid-test take effect.
 - **`use cache` requires `cacheComponents: true`** in `next.config.ts` — adding a `use cache` directive without it fails at build; keep the flag.
-- **v8 coverage crashes under Bun** — `node:inspector` APIs are unsupported, so `@vitest/coverage-v8` fails with "Coverage APIs are not supported". Use `bun run test:coverage` (istanbul provider, `@vitest/coverage-istanbul`); `coverage/` is gitignored and ESLint-ignored.
+- **v8 coverage crashes under Bun** — `node:inspector` APIs are unsupported, so `@vitest/coverage-v8` fails with "Coverage APIs are not supported". Use `bun run test:coverage` (istanbul provider, `@vitest/coverage-istanbul`); `coverage/` is gitignored and Oxlint-ignored.
 - **Reservation semantics:** stock is never decremented at checkout — only row-locked. Adding a decrement in the checkout handler would double-debit once the webhook runs.
 - **Webhook body ordering:** the LS webhook must read the raw body via `req.text()` BEFORE any parsing; JSON-parsing first silently breaks HMAC verification.
 - **camelCase convention:** all DB rows are mapped snake→camel at the API boundary; new endpoints must keep this or client types drift.

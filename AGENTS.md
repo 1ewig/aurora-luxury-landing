@@ -26,7 +26,7 @@ Key patterns:
 - **Use `bun`**, not npm/pnpm
 - `bun run dev` — dev server
 - `bun run build` — builds + typechecks (no separate `typecheck` command)
-- `bun run lint` — ESLint
+- `bun run lint` — Oxlint
 - `bun run test` — Vitest (single run), tests in `__tests__/`
 - `bun run test -- __tests__/api/categories.test.ts` — single test file
 - `bun run test:watch` — Vitest watch mode

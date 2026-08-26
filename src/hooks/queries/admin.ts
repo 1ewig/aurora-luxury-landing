@@ -34,7 +34,7 @@ export function useAdminDashboardQuery() {
       if (!res.ok) throw new Error('Failed to load dashboard metrics');
       return res.json();
     },
-    staleTime: 0,
+    staleTime: 30_000,
   });
 }
 
@@ -107,7 +107,7 @@ interface AdminUsersParams {
  * Generic pattern for all admin paginated queries:
  * - Params are serialized to URLSearchParams.
  * - keepPreviousData provides smooth pagination transitions.
- * - staleTime=0 ensures fresh data on every mount.
+ * - staleTime=30s avoids redundant roundtrips on tab switching while mutations invalidate.
  */
 
 /** Fetches paginated products for inventory management. */
@@ -126,7 +126,7 @@ export function useAdminProductsQuery(params: AdminProductsParams = {}) {
       return res.json();
     },
     placeholderData: keepPreviousData,
-    staleTime: 0,
+    staleTime: 30_000,
   });
 }
 
@@ -146,7 +146,7 @@ export function useAdminOrdersQuery(params: AdminOrdersParams = {}) {
       return res.json();
     },
     placeholderData: keepPreviousData,
-    staleTime: 0,
+    staleTime: 30_000,
   });
 }
 
@@ -168,7 +168,7 @@ export function useAdminUsersQuery(params: AdminUsersParams = {}) {
       return res.json();
     },
     placeholderData: keepPreviousData,
-    staleTime: 0,
+    staleTime: 30_000,
   });
 }
 
@@ -184,7 +184,7 @@ export function useAdminUserSessionsQuery(userId: string | null) {
       return data.sessions || [];
     },
     enabled: !!userId,
-    staleTime: 0,
+    staleTime: 30_000,
   });
 }
 
@@ -355,7 +355,7 @@ export function useAdminAuditLogsQuery(params: AdminAuditLogsParams = {}) {
       return res.json();
     },
     placeholderData: keepPreviousData,
-    staleTime: 0,
+    staleTime: 30_000,
   });
 }
 

@@ -14,13 +14,21 @@ import type { ProductData } from "@/stores/useAdminStore";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useAdminProductsQuery, useDeleteProductMutation } from "@/hooks/queries";
 import { useProductForm } from "@/hooks/useProductForm";
+import dynamic from "next/dynamic";
 import { Pagination } from "@/components/ui/Pagination";
 import { AdminHeaderPanel } from "@/components/ui/AdminHeaderPanel";
 import { Button } from "@/components/ui/Button";
 import { InventoryTable } from "./InventoryTable";
 import { InventorySkeleton } from "./InventorySkeleton";
-import { ProductFormModal } from "./ProductFormModal";
-import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
+
+const ProductFormModal = dynamic(
+  () => import("./ProductFormModal").then((m) => m.ProductFormModal),
+  { ssr: false }
+);
+const ConfirmDialog = dynamic(
+  () => import("@/components/ui/ConfirmDialog").then((m) => m.ConfirmDialog),
+  { ssr: false }
+);
 
 export function InventoryClient() {
   const searchParams = useSearchParams();
