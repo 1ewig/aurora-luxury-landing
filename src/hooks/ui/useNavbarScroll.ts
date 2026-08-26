@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import { isProgrammaticScrollActive } from "@/utils/scrollToSection";
 
 /** Returns motion values and visibility state for navbar and announcement strip. */
 export function useNavbarScroll() {
@@ -7,14 +8,19 @@ export function useNavbarScroll() {
   const [showBanner, setShowBanner] = useState(true);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious() ?? 0;
-    const diff = latest - previous;
-
     // At the very top of the page, always keep the announcement strip visible
     if (latest <= 10) {
       setShowBanner(true);
       return;
     }
+
+    // Ignore scroll direction triggers while programmatic section scrolling is in progress
+    if (isProgrammaticScrollActive()) {
+      return;
+    }
+
+    const previous = scrollY.getPrevious() ?? 0;
+    const diff = latest - previous;
 
     // Scroll down threshold (> 5px) -> hide
     if (diff > 5) {

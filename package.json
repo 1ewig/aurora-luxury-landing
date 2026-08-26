@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "oxlint",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage"
@@ -32,7 +32,6 @@
     "zustand": "^5.0.13"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^16.2.7",
     "@tailwindcss/postcss": "4.1.17",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "22.19.17",
@@ -40,10 +39,8 @@
     "@types/pg": "^8.20.0",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
-    "@typescript-eslint/parser": "^8.61.0",
     "@vitest/coverage-istanbul": "^4.1.10",
-    "eslint": "^10.4.1",
-    "eslint-config-next": "^16.2.7",
+    "oxlint": "^1.80.0",
     "postcss": "^8.5.14",
     "sharp": "^0.34.5",
     "tailwindcss": "4.1.17",
