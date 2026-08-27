@@ -52,6 +52,7 @@ export function UsersClient() {
     setConfirmDelete,
     deleting,
     updatingVerify,
+    updatingRole,
     sessions,
     sessionsLoading,
     isAdmin,
@@ -155,6 +156,7 @@ export function UsersClient() {
         onDelete={(u) => setConfirmDelete(u)}
         isAdmin={isAdmin}
         updatingVerifyId={updatingVerify}
+        updatingRoleId={updatingRole}
       />
 
       <ConfirmDialog

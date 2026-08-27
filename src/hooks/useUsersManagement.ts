@@ -46,6 +46,7 @@ export function useUsersManagement(
   const [confirmDelete, setConfirmDelete] = useState<UserRow | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [updatingVerify, setUpdatingVerify] = useState<string | null>(null);
+  const [updatingRole, setUpdatingRole] = useState<string | null>(null);
 
   const { data: sessions = [], isLoading: sessionsLoading } = useAdminUserSessionsQuery(selectedUser?.id ?? null);
 
@@ -57,20 +58,23 @@ export function useUsersManagement(
         setSelectedUser((prev) => (prev ? { ...prev, emailVerified: newStatus } : null));
       }
     } catch (err: any) {
-      alert(err.message);
+      alert(err.message || "Failed to update verification status");
     } finally {
       setUpdatingVerify(null);
     }
   };
 
   const handleRoleChange = async (user: UserRow, newRole: string) => {
+    setUpdatingRole(user.id);
     try {
       await updateRoleMutation.mutateAsync({ userId: user.id, role: newRole });
       if (selectedUser?.id === user.id) {
         setSelectedUser((prev) => (prev ? { ...prev, role: newRole } : null));
       }
     } catch (err: any) {
-      alert(err.message);
+      alert(err.message || "Failed to update user role");
+    } finally {
+      setUpdatingRole(null);
     }
   };
 
@@ -100,6 +104,7 @@ export function useUsersManagement(
     setConfirmDelete,
     deleting,
     updatingVerify,
+    updatingRole,
     sessions,
     sessionsLoading,
     isAdmin,

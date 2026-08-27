@@ -26,9 +26,21 @@ export function useOrdersManagement(page: number, search: string, filterStatus: 
   const isAdmin = useAuthStore((s) => s.user?.isAdmin ?? false);
 
   const [selectedOrder, setSelectedOrder] = useState<OrderData | null>(null);
+  const [updatingOrderId, setUpdatingOrderId] = useState<string | null>(null);
 
-  const updateOrderStatus = (orderId: string, status: string) =>
-    updateMutation.mutateAsync({ orderId, status });
+  const updateOrderStatus = async (orderId: string, status: string) => {
+    setUpdatingOrderId(orderId);
+    try {
+      await updateMutation.mutateAsync({ orderId, status });
+      if (selectedOrder?.id === orderId) {
+        setSelectedOrder((prev) => (prev ? { ...prev, status: status as OrderData["status"] } : null));
+      }
+    } catch (err: any) {
+      alert(err.message || "Failed to update order status");
+    } finally {
+      setUpdatingOrderId(null);
+    }
+  };
 
   return {
     orders: data?.orders ?? [],
@@ -39,6 +51,7 @@ export function useOrdersManagement(page: number, search: string, filterStatus: 
     selectedOrder,
     setSelectedOrder,
     updateOrderStatus,
+    updatingOrderId,
     isAdmin,
     fetchOrders: refetch,
   };

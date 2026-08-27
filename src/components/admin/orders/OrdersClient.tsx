@@ -39,6 +39,7 @@ export function OrdersClient() {
     selectedOrder,
     setSelectedOrder,
     updateOrderStatus,
+    updatingOrderId,
     isAdmin,
     fetchOrders,
   } = useOrdersManagement(page, search, status);
@@ -111,7 +112,7 @@ export function OrdersClient() {
             onClose={() => setSelectedOrder(null)}
             order={selectedOrder ? (orders.find((o) => o.id === selectedOrder.id) || selectedOrder) : null}
             onStatusUpdate={updateOrderStatus}
-            updatingStatusId={loading && selectedOrder ? selectedOrder.id : null}
+            updatingStatusId={updatingOrderId}
             isAdmin={isAdmin}
           />
         </>
