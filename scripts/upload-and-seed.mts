@@ -153,7 +153,6 @@ async function runConcurrent<T>(
   fn: (item: T) => Promise<void>,
 ): Promise<void> {
   const iterator = items[Symbol.iterator]();
-  const running: Promise<void>[] = [];
   let stopped = false;
 
   async function worker() {
@@ -282,7 +281,7 @@ async function seed() {
       try {
         const createOut = execSync(`bunx @insforge/cli storage create-bucket ${bucketName}`, { encoding: 'utf-8' });
         console.log(createOut);
-      } catch (err: any) {
+      } catch {
         // Bucket might already exist, ignore if so
       }
     }
@@ -404,6 +403,8 @@ async function seed() {
         break;
     }
   });
+
+  console.log(`\nImage resolution summary: ${uploaded} uploaded, ${exists} exists, ${missing} missing.`);
 
   console.log(`\nConnecting to database...`);
   const client = new Client({ connectionString: DATABASE_URL });

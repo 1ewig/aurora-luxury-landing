@@ -39,9 +39,15 @@ export function VerifyForm({
   initialCooldown = 0,
 }: VerifyFormProps) {
   const [countdown, setCountdown] = useState(initialCooldown);
+  const [prevCooldown, setPrevCooldown] = useState(initialCooldown);
   const [resending, setResending] = useState(false);
 
-  useEffect(() => { if (initialCooldown > 0) setCountdown(initialCooldown); }, [initialCooldown]);
+  if (prevCooldown !== initialCooldown) {
+    setPrevCooldown(initialCooldown);
+    if (initialCooldown > 0) {
+      setCountdown(initialCooldown);
+    }
+  }
   useEffect(() => {
     if (countdown > 0) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);

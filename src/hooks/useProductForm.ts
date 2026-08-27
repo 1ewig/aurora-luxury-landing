@@ -11,7 +11,7 @@
  * which typically refreshes the product list and closes the form.
  */
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useInsforgeClient } from "@/lib/insforge";
 import { useSaveProductMutation } from "@/hooks/queries";
 import type { ProductData, SizeStock } from "@/stores/useAdminStore";
@@ -82,15 +82,17 @@ export function useProductForm(onSuccess: () => void) {
    * Only fires when formId is empty (no existing product loaded).
    * Prevents overriding a manually-set slug during edits.
    */
-  useEffect(() => {
-    if (!formId && formName) {
+  const [prevFormName, setPrevFormName] = useState(formName);
+  if (!formId && prevFormName !== formName) {
+    setPrevFormName(formName);
+    if (formName) {
       const slugified = formName
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/(^-|-$)+/g, "");
       setFormSlug(slugified);
     }
-  }, [formName, formId]);
+  }
 
   /** Populates the form for editing or resets to defaults for creation. */
   function resetForm(product?: ProductData | null) {
@@ -248,7 +250,10 @@ export function useProductForm(onSuccess: () => void) {
       aspectRatio: formAspectRatio.trim() || null,
       description: formDescription.trim(),
       images: galleryUrls,
-      sizes: formSizes,
+      sizes: formSizes.map((s) => ({
+        size: s.size,
+        stock: typeof s.stock === 'number' && !isNaN(s.stock) ? Math.max(0, Math.floor(s.stock)) : Math.max(0, parseInt(String(s.stock), 10) || 0),
+      })),
       details: formDetails,
     };
 

@@ -95,32 +95,32 @@ describe("validateShippingAddress", () => {
   });
 
   it("returns error for missing email", () => {
-    const { email, ...rest } = validAddress;
+    const { email: _email, ...rest } = validAddress;
     expect(validateShippingAddress(rest)).toBe("email is required");
   });
 
   it("returns error for missing first name", () => {
-    const { firstName, ...rest } = validAddress;
+    const { firstName: _firstName, ...rest } = validAddress;
     expect(validateShippingAddress(rest)).toBe("first name is required");
   });
 
   it("returns error for missing last name", () => {
-    const { lastName, ...rest } = validAddress;
+    const { lastName: _lastName, ...rest } = validAddress;
     expect(validateShippingAddress(rest)).toBe("last name is required");
   });
 
   it("returns error for missing address", () => {
-    const { address, ...rest } = validAddress;
+    const { address: _address, ...rest } = validAddress;
     expect(validateShippingAddress(rest)).toBe("address is required");
   });
 
   it("returns error for missing city", () => {
-    const { city, ...rest } = validAddress;
+    const { city: _city, ...rest } = validAddress;
     expect(validateShippingAddress(rest)).toBe("city is required");
   });
 
   it("returns error for missing ZIP code", () => {
-    const { zipCode, ...rest } = validAddress;
+    const { zipCode: _zipCode, ...rest } = validAddress;
     expect(validateShippingAddress(rest)).toBe("ZIP code is required");
   });
 

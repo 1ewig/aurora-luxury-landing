@@ -299,23 +299,24 @@ export function OrderDetailModal({
 
               {/* Status Management Card (Admin) */}
               {isAdmin && (
-                <div className="border border-border-subtle bg-bg-primary/25 p-4 sm:p-5 rounded-2xl space-y-3.5 relative overflow-hidden">
-                  {isUpdating && (
-                    <div className="absolute inset-0 bg-bg-secondary/80 backdrop-blur-xs flex flex-col items-center justify-center gap-2 z-10 animate-in fade-in duration-150">
-                      <svg className="animate-spin h-5 w-5 text-accent-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                      </svg>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-text-primary">
-                        Updating Status...
+                <div className={`border border-border-subtle bg-bg-primary/25 p-4 sm:p-5 rounded-2xl space-y-3.5 relative overflow-hidden transition-opacity ${
+                  isUpdating ? "opacity-75" : ""
+                }`}>
+                  <div className="flex items-center justify-between pb-1 border-b border-border-subtle/50">
+                    <h3 className="text-[11px] font-bold uppercase tracking-wider text-text-secondary flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-accent-primary" />
+                      Fulfillment Control
+                    </h3>
+                    {isUpdating && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-accent-vivid animate-pulse">
+                        <svg className="animate-spin h-3 w-3" viewBox="0 0 24 24" fill="none">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Updating...
                       </span>
-                    </div>
-                  )}
-
-                  <h3 className="text-[11px] font-bold uppercase tracking-wider text-text-secondary flex items-center gap-1.5 pb-1 border-b border-border-subtle/50">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent-primary" />
-                    Fulfillment Control
-                  </h3>
+                    )}
+                  </div>
 
                   <div className="space-y-3 text-xs">
                     <div className="flex items-center justify-between">
@@ -333,7 +334,7 @@ export function OrderDetailModal({
                           disabled={isUpdating}
                           value={order.status}
                           onChange={(e) => onStatusUpdate(order.id, e.target.value)}
-                          className="w-full px-3.5 py-2.5 bg-bg-secondary border border-border-medium rounded-xl text-xs font-semibold text-text-primary focus:border-accent-primary focus:outline-none transition-colors cursor-pointer appearance-none pr-10 hover:border-text-muted disabled:opacity-50"
+                          className="w-full px-3.5 py-2.5 bg-bg-secondary border border-border-medium rounded-xl text-xs font-semibold text-text-primary focus:border-accent-primary focus:outline-none transition-colors cursor-pointer appearance-none pr-10 hover:border-text-muted disabled:opacity-50 disabled:cursor-not-allowed"
                           style={{
                             backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B6B6B' stroke-width='2'><path stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/></svg>")`,
                             backgroundRepeat: "no-repeat",

@@ -14,10 +14,12 @@
  * waiting for a real order number.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { useCartStore } from "@/stores/useCartStore";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useSearchParams } from "next/navigation";
+
+const emptySubscribe = () => () => {};
 
 interface CheckoutData {
   orderNumber: string;
@@ -38,25 +40,24 @@ export function useCheckoutSuccess() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("order_id");
 
-  const [orderData, setOrderData] = useState<CheckoutData | null>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [orderData, setOrderData] = useState<CheckoutData | null>(() => {
+    if (typeof window === "undefined") return null;
+    const raw = sessionStorage.getItem("ls_checkout_data");
+    if (!raw) return null;
+    try {
+      const parsed = JSON.parse(raw);
+      sessionStorage.removeItem("ls_checkout_data");
+      return parsed;
+    } catch (e) {
+      console.error("Failed to parse ls_checkout_data", e);
+      return null;
+    }
+  });
+  const isLoaded = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
   useEffect(() => {
     // Clear cart immediately — items are now a confirmed order, not in a cart
     clearCart();
-
-    // Attempt to restore the detailed checkout snapshot from sessionStorage
-    const raw = sessionStorage.getItem("ls_checkout_data");
-    if (raw) {
-      try {
-        setOrderData(JSON.parse(raw));
-        // Purge immediately so a page refresh shows clean data
-        sessionStorage.removeItem("ls_checkout_data");
-      } catch (e) {
-        console.error("Failed to parse ls_checkout_data", e);
-      }
-    }
-    setIsLoaded(true);
   }, [clearCart]);
 
   /*
@@ -66,9 +67,10 @@ export function useCheckoutSuccess() {
    * at 1.5s intervals. The first successful response with an orderNumber
    * stops the polling and updates the display.
    */
+  const hasOrderData = orderData !== null;
   useEffect(() => {
     // Don't poll if there's no LS order ID, or if we don't have base checkout data yet
-    if (!orderId || !orderData) return;
+    if (!orderId || !hasOrderData) return;
 
     let attempts = 0;
     const maxAttempts = 10;
@@ -101,7 +103,7 @@ export function useCheckoutSuccess() {
     timerId = setTimeout(poll, 1000);
 
     return () => clearTimeout(timerId);
-  }, [orderId, orderData === null]);
+  }, [orderId, hasOrderData]);
 
   return {
     orderData,

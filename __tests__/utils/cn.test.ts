@@ -7,7 +7,8 @@ describe("cn", () => {
   });
 
   it("filters falsy values via clsx syntax", () => {
-    expect(cn("base", false && "hidden", "visible")).toBe("base visible");
+    const isHidden: boolean = false;
+    expect(cn("base", isHidden && "hidden", "visible")).toBe("base visible");
   });
 
   it("resolves tailwind conflicts (last wins)", () => {
@@ -15,7 +16,8 @@ describe("cn", () => {
   });
 
   it("handles conditional classes with ternary", () => {
-    expect(cn("text-sm", true ? "font-bold" : "font-normal")).toBe(
+    const isBold: boolean = true;
+    expect(cn("text-sm", isBold ? "font-bold" : "font-normal")).toBe(
       "text-sm font-bold"
     );
   });

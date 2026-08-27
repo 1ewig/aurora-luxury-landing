@@ -6,7 +6,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useOrders, type Order } from "@/hooks/queries";
 
 import { Button } from "@/components/ui/Button";
@@ -18,14 +18,16 @@ export function OrdersClient() {
   const [page, setPage] = useState(0);
   const [allOrders, setAllOrders] = useState<Order[]>([]);
   const { data, isLoading, error } = useOrders(page);
+  const [prevData, setPrevData] = useState(data);
 
-  useEffect(() => {
+  if (prevData !== data) {
+    setPrevData(data);
     if (data) {
       setAllOrders((prev) =>
         page === 0 ? data.orders : [...prev, ...data.orders]
       );
     }
-  }, [data]);
+  }
 
   const hasMore = data ? allOrders.length < data.total : false;
 

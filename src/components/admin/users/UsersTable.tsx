@@ -2,7 +2,7 @@
  * Aurora — src/components/admin/users/UsersTable.tsx
  *
  * Tabular display of users with sorting column headers, layout-specific alignments,
- * loading overlay states, and verification/actions.
+ * loading overlay states, and verification/actions matching the admin table design system.
  */
 
 "use client";
@@ -19,6 +19,38 @@ interface UsersTableProps {
   onViewUser: (user: UserRow) => void;
 }
 
+interface SortHeaderProps {
+  label: string;
+  sortKey: SortKey;
+  currentSortKey: SortKey;
+  sortDir: "asc" | "desc";
+  onSort: (key: SortKey) => void;
+  align?: "left" | "center" | "right";
+}
+
+function SortHeader({
+  label,
+  sortKey,
+  currentSortKey,
+  sortDir,
+  onSort,
+  align = "left",
+}: SortHeaderProps) {
+  return (
+    <th
+      className={`px-6 py-4 cursor-pointer hover:text-text-primary select-none whitespace-nowrap ${
+        align === "center" ? "text-center" : align === "right" ? "text-right" : "text-left"
+      }`}
+      onClick={() => onSort(sortKey)}
+    >
+      <span>{label}</span>
+      {currentSortKey === sortKey && (
+        <span className="ml-1 text-[8px]">{sortDir === "asc" ? "▲" : "▼"}</span>
+      )}
+    </th>
+  );
+}
+
 export function UsersTable({
   users,
   total,
@@ -28,43 +60,21 @@ export function UsersTable({
   onSort,
   onViewUser,
 }: UsersTableProps) {
-  const SortHeader = ({
-    label,
-    sortKey: k,
-    align = "center",
-  }: {
-    label: string;
-    sortKey: SortKey;
-    align?: "left" | "center" | "right";
-  }) => (
-    <th
-      className={`px-4 py-3 text-xs font-semibold uppercase tracking-wider text-text-secondary cursor-pointer hover:text-text-primary select-none whitespace-nowrap ${
-        align === "center" ? "text-center" : align === "right" ? "text-right" : "text-left"
-      }`}
-      onClick={() => onSort(k)}
-    >
-      {label}
-      {sortKey === k && (
-        <span className="ml-1">{sortDir === "asc" ? "▲" : "▼"}</span>
-      )}
-    </th>
-  );
-
   return (
-    <>
-      <div className="overflow-x-auto border border-border-subtle rounded-2xl bg-white">
-        <table className="w-full text-sm">
-          <thead className="bg-bg-primary/50 border-b border-border-subtle">
-            <tr>
-              <SortHeader label="Name" sortKey="name" align="left" />
-              <SortHeader label="Email" sortKey="email" align="center" />
-              <SortHeader label="Verified" sortKey="emailVerified" align="center" />
-              <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-text-secondary whitespace-nowrap text-center">
+    <div className="space-y-4">
+      <div className="overflow-x-auto border border-border-subtle rounded-[24px] bg-bg-secondary shadow-sm">
+        <table className="w-full border-collapse text-left text-sm">
+          <thead>
+            <tr className="border-b border-border-subtle bg-bg-primary/50 uppercase tracking-wider text-[10px] font-semibold text-text-secondary">
+              <SortHeader label="Name" sortKey="name" currentSortKey={sortKey} sortDir={sortDir} onSort={onSort} align="left" />
+              <SortHeader label="Email" sortKey="email" currentSortKey={sortKey} sortDir={sortDir} onSort={onSort} align="left" />
+              <SortHeader label="Verified" sortKey="emailVerified" currentSortKey={sortKey} sortDir={sortDir} onSort={onSort} align="left" />
+              <th className="px-6 py-4 text-left">
                 Auth
               </th>
-              <SortHeader label="Sessions" sortKey="sessionCount" align="center" />
-              <SortHeader label="Joined" sortKey="createdAt" align="center" />
-              <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-text-secondary whitespace-nowrap text-center">
+              <SortHeader label="Sessions" sortKey="sessionCount" currentSortKey={sortKey} sortDir={sortDir} onSort={onSort} align="left" />
+              <SortHeader label="Joined" sortKey="createdAt" currentSortKey={sortKey} sortDir={sortDir} onSort={onSort} align="left" />
+              <th className="px-6 py-4 text-right">
                 Actions
               </th>
             </tr>
@@ -76,16 +86,18 @@ export function UsersTable({
           >
             {users.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-6 py-12 text-center text-text-secondary text-sm">
+                <td colSpan={7} className="p-20 text-center text-text-secondary text-sm">
                   No users match your filters.
                 </td>
               </tr>
             ) : (
               users.map((user) => (
-                <tr key={user.id} className="hover:bg-bg-primary/30 transition-colors">
-                  <td className="px-4 py-3 text-text-primary font-medium whitespace-nowrap text-left">
-                    <div className="flex items-center justify-start gap-2">
-                      <span>{user.name || <span className="text-text-muted italic">No name</span>}</span>
+                <tr key={user.id} className="hover:bg-bg-primary/25 transition-colors">
+                  <td className="px-6 py-4 text-text-primary font-medium whitespace-nowrap">
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-text-primary">
+                        {user.name || <span className="text-text-muted italic font-normal">No name</span>}
+                      </span>
                       {user.role && user.role !== "user" && (
                         <span
                           className={`text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border ${
@@ -99,12 +111,12 @@ export function UsersTable({
                       )}
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-text-secondary whitespace-nowrap text-center">
+                  <td className="px-6 py-4 text-text-secondary whitespace-nowrap">
                     {user.email}
                   </td>
-                  <td className="px-4 py-3 text-center">
+                  <td className="px-6 py-4">
                     {user.emailVerified ? (
-                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-success bg-success/10 px-2.5 py-0.5 rounded-full">
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full">
                         <svg
                           className="w-3 h-3"
                           fill="none"
@@ -117,7 +129,7 @@ export function UsersTable({
                         Verified
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-error bg-error/10 px-2.5 py-0.5 rounded-full">
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-red-600 bg-red-50 border border-red-200/60 px-2 py-0.5 rounded-full">
                         <svg
                           className="w-3 h-3"
                           fill="none"
@@ -131,12 +143,12 @@ export function UsersTable({
                       </span>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-center">
-                    <div className="flex justify-center gap-1">
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-1.5 flex-wrap">
                       {user.accounts.map((acc) => (
                         <span
                           key={acc.id}
-                          className="text-[10px] font-mono uppercase tracking-wider bg-bg-primary border border-border-subtle px-1.5 py-0.5 rounded"
+                          className="text-[10px] font-mono uppercase tracking-wider bg-bg-primary text-text-secondary border border-border-subtle px-2 py-0.5 rounded-md"
                           title={acc.providerId}
                         >
                           {acc.providerId === "credential" ? "Email" : acc.providerId}
@@ -147,28 +159,28 @@ export function UsersTable({
                       )}
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-center">
+                  <td className="px-6 py-4">
                     <span
-                      className={`inline-flex items-center justify-center min-w-[2rem] text-xs font-semibold px-2 py-0.5 rounded-full ${
+                      className={`inline-flex items-center justify-center min-w-[2rem] text-xs font-semibold px-2 py-0.5 rounded-full border ${
                         user.sessionCount > 0
-                          ? "bg-accent-primary/10 text-accent-primary"
-                          : "bg-bg-primary text-text-muted"
+                          ? "bg-accent-primary/10 text-accent-vivid border-accent-primary/20"
+                          : "bg-bg-primary text-text-muted border-border-subtle"
                       }`}
                     >
                       {user.sessionCount}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-center text-text-secondary text-xs whitespace-nowrap">
+                  <td className="px-6 py-4 text-text-secondary text-xs whitespace-nowrap">
                     {new Date(user.createdAt).toLocaleDateString("en-US", {
                       year: "numeric",
                       month: "short",
                       day: "numeric",
                     })}
                   </td>
-                  <td className="px-4 py-3 text-center">
+                  <td className="px-6 py-4 text-right">
                     <button
                       onClick={() => onViewUser(user)}
-                      className="text-xs font-semibold text-accent-primary hover:underline cursor-pointer"
+                      className="px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-text-primary hover:text-accent-primary transition-colors cursor-pointer"
                     >
                       View
                     </button>
@@ -183,6 +195,6 @@ export function UsersTable({
       <p className="text-xs text-text-muted text-right">
         {users.length} of {total} user{total !== 1 ? "s" : ""}
       </p>
-    </>
+    </div>
   );
 }

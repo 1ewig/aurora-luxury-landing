@@ -41,7 +41,9 @@ function setBridgeToken(client: InsForgeClient, token: string | null) {
 /** Provides an InsForge client with automatic JWT bridging for the current user session. */
 export function useInsforgeClient(): { client: InsForgeClient; isReady: boolean } {
   const session = authClient.useSession();
+  const userId = session.data?.user?.id;
   const [isReady, setIsReady] = useState(false);
+  const [prevUserId, setPrevUserId] = useState(userId);
 
   const client = useMemo(
     () =>
@@ -52,6 +54,14 @@ export function useInsforgeClient(): { client: InsForgeClient; isReady: boolean 
     [],
   );
 
+  if (prevUserId !== userId) {
+    setPrevUserId(userId);
+    if (!userId) {
+      setBridgeToken(client, null);
+      setIsReady(false);
+    }
+  }
+
   /*
    * When the user session changes, fetch a fresh JWT bridge token.
    * Token is refreshed every 50 minutes via setInterval to prevent
@@ -59,9 +69,7 @@ export function useInsforgeClient(): { client: InsForgeClient; isReady: boolean 
    * state after unmount.
    */
   useEffect(() => {
-    if (!session.data?.user) {
-      setBridgeToken(client, null);
-      setIsReady(false);
+    if (!userId) {
       return;
     }
 
@@ -88,7 +96,7 @@ export function useInsforgeClient(): { client: InsForgeClient; isReady: boolean 
       cancelled = true;
       clearInterval(id);
     };
-  }, [client, session.data?.user?.id]);
+  }, [client, userId]);
 
   return { client, isReady };
 }

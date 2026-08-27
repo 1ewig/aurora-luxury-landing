@@ -106,6 +106,18 @@ describe('updateProductSchema', () => {
     expect(result.success).toBe(true);
   });
 
+  it('accepts valid update payload including optional id and stock levels', () => {
+    const result = updateProductSchema.safeParse({
+      ...validUpdate,
+      id: 'p-1',
+      sizes: [
+        { size: 'S', stock: 0 },
+        { size: 'M', stock: 25 },
+      ],
+    });
+    expect(result.success).toBe(true);
+  });
+
   it('rejects unknown fields in update payload', () => {
     const result = updateProductSchema.safeParse({
       ...validUpdate,

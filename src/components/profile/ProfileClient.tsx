@@ -5,7 +5,7 @@
  */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { ProfileWorkspace } from "./ProfileWorkspace";
@@ -21,16 +21,16 @@ export function ProfileClient() {
     router.push("/login");
   };
 
-  const [displayName, setDisplayName] = useState("");
+  const [displayName, setDisplayName] = useState(() => profile?.displayName || "");
+  const [prevProfileName, setPrevProfileName] = useState(profile?.displayName);
   const [statusMsg, setStatusMsg] = useState("");
   const [statusType, setStatusType] = useState<"success" | "error" | "">("");
   const [updating, setUpdating] = useState(false);
 
-  useEffect(() => {
-    if (profile) {
-      setDisplayName(profile.displayName || "");
-    }
-  }, [profile]);
+  if (prevProfileName !== profile?.displayName) {
+    setPrevProfileName(profile?.displayName);
+    setDisplayName(profile?.displayName || "");
+  }
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();

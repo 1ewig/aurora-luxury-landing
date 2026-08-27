@@ -23,6 +23,7 @@ interface UserDetailModalProps {
   onDelete: (user: UserRow) => void;
   isAdmin: boolean;
   updatingVerifyId: string | null;
+  updatingRoleId?: string | null;
 }
 
 /** User detail modal showing profile, linked accounts, sessions, and admin actions. */
@@ -36,6 +37,7 @@ export function UserDetailModal({
   onDelete,
   isAdmin,
   updatingVerifyId,
+  updatingRoleId,
 }: UserDetailModalProps) {
   useBodyScrollLock(!!user);
 
@@ -164,23 +166,37 @@ export function UserDetailModal({
           </div>
 
           {/* User Role Card */}
-          <div className="border border-border-subtle bg-bg-primary/25 p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className={`border border-border-subtle bg-bg-primary/25 p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-opacity ${
+            updatingRoleId === user.id ? "opacity-75" : ""
+          }`}>
             <div>
-              <h4 className="text-[11px] font-bold uppercase tracking-wider text-text-secondary flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent-primary" />
-                Access Role & Permissions
-              </h4>
+              <div className="flex items-center gap-2">
+                <h4 className="text-[11px] font-bold uppercase tracking-wider text-text-secondary flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent-primary" />
+                  Access Role & Permissions
+                </h4>
+                {updatingRoleId === user.id && (
+                  <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-accent-vivid animate-pulse">
+                    <svg className="animate-spin h-3 w-3" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Updating...
+                  </span>
+                )}
+              </div>
               <p className="text-[11px] text-text-muted mt-0.5">
                 Controls administrative capabilities and dashboard access.
               </p>
             </div>
 
             {isAdmin ? (
-              <div className="relative shrink-0">
+              <div className="relative shrink-0 flex items-center gap-2">
                 <select
                   value={user.role || "user"}
+                  disabled={updatingRoleId === user.id}
                   onChange={(e) => onRoleChange(user, e.target.value)}
-                  className="w-full sm:w-auto px-4 py-2 bg-bg-secondary border border-border-medium rounded-xl text-xs font-semibold text-text-primary focus:border-accent-primary focus:outline-none transition-colors cursor-pointer appearance-none pr-9 hover:border-text-muted"
+                  className="w-full sm:w-auto px-4 py-2 bg-bg-secondary border border-border-medium rounded-xl text-xs font-semibold text-text-primary focus:border-accent-primary focus:outline-none transition-colors cursor-pointer appearance-none pr-9 hover:border-text-muted disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{
                     backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B6B6B' stroke-width='2'><path stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/></svg>")`,
                     backgroundRepeat: "no-repeat",
@@ -200,19 +216,32 @@ export function UserDetailModal({
           </div>
 
           {/* Email Verification Card */}
-          <div className="border border-border-subtle bg-bg-primary/25 p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className={`border border-border-subtle bg-bg-primary/25 p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-opacity ${
+            updatingVerifyId === user.id ? "opacity-75" : ""
+          }`}>
             <div>
-              <h4 className="text-[11px] font-bold uppercase tracking-wider text-text-secondary flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent-primary" />
-                Email Verification
-              </h4>
+              <div className="flex items-center gap-2">
+                <h4 className="text-[11px] font-bold uppercase tracking-wider text-text-secondary flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent-primary" />
+                  Email Verification
+                </h4>
+                {updatingVerifyId === user.id && (
+                  <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-accent-vivid animate-pulse">
+                    <svg className="animate-spin h-3 w-3" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Updating...
+                  </span>
+                )}
+              </div>
               <p className="text-[11px] text-text-muted mt-0.5">
                 Controls whether this account&rsquo;s email address has been verified.
               </p>
             </div>
 
             {isAdmin ? (
-              <div className="relative shrink-0">
+              <div className="relative shrink-0 flex items-center gap-2">
                 <select
                   value={user.emailVerified ? "verified" : "unverified"}
                   disabled={updatingVerifyId === user.id}

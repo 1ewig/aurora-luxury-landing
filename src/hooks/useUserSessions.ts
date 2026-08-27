@@ -20,11 +20,18 @@ export interface SessionRow {
 /** Fetches active sessions for a user. Used in the admin user detail modal. */
 export function useUserSessions(userId: string | null) {
   const [sessions, setSessions] = useState<SessionRow[]>([]);
+  const [prevUserId, setPrevUserId] = useState(userId);
   const [loading, setLoading] = useState(false);
+
+  if (prevUserId !== userId) {
+    setPrevUserId(userId);
+    if (!userId) {
+      setSessions([]);
+    }
+  }
 
   useEffect(() => {
     if (!userId) {
-      setSessions([]);
       return;
     }
 

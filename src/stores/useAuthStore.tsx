@@ -17,7 +17,13 @@
 "use client";
 
 import { createStore, useStore } from 'zustand';
-import { createContext, useContext, useEffect, useRef } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  type ReactNode,
+} from "react";
 import { authClient } from '@/lib/auth-client';
 import { fetchUserRole, buildUserState } from '@/utils/auth';
 
@@ -281,20 +287,17 @@ export const createAuthStore = (initialUser: User | null = null) => {
 export const AuthStoreContext = createContext<ReturnType<typeof createAuthStore> | null>(null);
 
 interface AuthProviderProps {
-  children: React.ReactNode;
+  children: ReactNode;
   initialUser: User | null;
 }
 
 export function AuthProvider({ children, initialUser }: AuthProviderProps) {
   /*
    * Store instance is created lazily on the first render and persists
-   * via useRef (no re-creation on re-renders). This is the SSR-safe
+   * via useState (no re-creation on re-renders). This is the SSR-safe
    * pattern recommended by Zustand for use with React Context.
    */
-  const storeRef = useRef<ReturnType<typeof createAuthStore> | undefined>(undefined);
-  if (!storeRef.current) {
-    storeRef.current = createAuthStore(initialUser);
-  }
+  const [store] = useState(() => createAuthStore(initialUser));
 
   /*
    * On mount, if no initialUser was provided (e.g. SSR without session),
@@ -312,7 +315,7 @@ export function AuthProvider({ children, initialUser }: AuthProviderProps) {
 
         const role = await fetchUserRole();
         const state = buildUserState(sessionData.user, role);
-        storeRef.current?.setState({ ...state });
+        store.setState({ ...state });
       } catch {
         // Silent — the server-side role query may have failed transiently
         // or the user simply isn't logged in.
@@ -320,10 +323,10 @@ export function AuthProvider({ children, initialUser }: AuthProviderProps) {
     }
 
     recoverSession();
-  }, [initialUser]);
+  }, [initialUser, store]);
 
   return (
-    <AuthStoreContext.Provider value={storeRef.current}>
+    <AuthStoreContext.Provider value={store}>
       {children}
     </AuthStoreContext.Provider>
   );

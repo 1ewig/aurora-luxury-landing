@@ -22,17 +22,11 @@ function ResetPasswordContent() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [formError, setFormError] = useState("");
-  const [successMsg, setSuccessMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState(() => token ? "Reset link verified! Enter your new password below." : "");
 
   const { resetPassword, loading, error: storeError, clearError } = useAuthStore();
 
   useEffect(() => { clearError(); }, [clearError]);
-
-  useEffect(() => {
-    if (token) {
-      setSuccessMsg("Reset link verified! Enter your new password below.");
-    }
-  }, [token]);
 
   useEffect(() => {
     if (!token && !email) {
