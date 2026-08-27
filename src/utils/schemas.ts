@@ -87,6 +87,7 @@ export const createProductSchema = z
 
 export const updateProductSchema = z
   .object({
+    id: z.string().max(50).optional(),
     slug: z.string().min(1, 'Slug is required').max(100),
     name: z.string().min(1, 'Name is required').max(200),
     category: z.string().min(1, 'Category is required').max(100),

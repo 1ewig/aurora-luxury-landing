@@ -167,9 +167,15 @@ export function SizeStockFields({
                       <input
                         type="number"
                         min="0"
-                        value={s.stock}
+                        value={s.stock === 0 ? "" : s.stock}
+                        placeholder="0"
                         onChange={(e) => {
-                          const val = parseInt(e.target.value, 10);
+                          const raw = e.target.value;
+                          if (raw === "") {
+                            onStockChange(s.size, 0);
+                            return;
+                          }
+                          const val = parseInt(raw, 10);
                           if (isNaN(val)) return;
                           onStockChange(s.size, Math.max(0, val));
                         }}

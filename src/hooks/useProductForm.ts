@@ -248,7 +248,10 @@ export function useProductForm(onSuccess: () => void) {
       aspectRatio: formAspectRatio.trim() || null,
       description: formDescription.trim(),
       images: galleryUrls,
-      sizes: formSizes,
+      sizes: formSizes.map((s) => ({
+        size: s.size,
+        stock: typeof s.stock === 'number' && !isNaN(s.stock) ? Math.max(0, Math.floor(s.stock)) : Math.max(0, parseInt(String(s.stock), 10) || 0),
+      })),
       details: formDetails,
     };
 

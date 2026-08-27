@@ -137,6 +137,41 @@ describe("PUT /api/admin/products/[id]", () => {
     expect(res.status).toBe(200);
     expect(mockRevalidateTag).toHaveBeenCalled();
   });
+
+  it("updates product successfully when id is present in payload from frontend form", async () => {
+    db.mockClientQuery
+      .mockResolvedValueOnce({ rows: [{ image: "/old.jpg" }] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [{ image_url: "/gallery.jpg" }] })
+      .mockResolvedValue({ rows: [] });
+
+    const { PUT } = await import("@/app/api/admin/products/[id]/route");
+    const res = await PUT(
+      req("http://localhost:3000", {
+        method: "PUT",
+        body: {
+          id: "p-1",
+          slug: "updated",
+          name: "Updated",
+          category: "Knitwear",
+          price: 150,
+          image: "/new.jpg",
+          altText: "Alt",
+          description: "New Desc",
+          images: [],
+          sizes: [
+            { size: "S", stock: 0 },
+            { size: "M", stock: 15 },
+          ],
+          details: ["New detail"],
+        },
+      }),
+      { params: Promise.resolve({ id: "p-1" }) }
+    );
+
+    expect(res.status).toBe(200);
+    expect(mockRevalidateTag).toHaveBeenCalled();
+  });
 });
 
 describe("DELETE /api/admin/products/[id]", () => {
