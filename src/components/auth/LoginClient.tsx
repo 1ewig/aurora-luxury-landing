@@ -31,7 +31,17 @@ export function LoginClient() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [formError, setFormError] = useState("");
-  const [successMsg, setSuccessMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState(() => {
+    if (typeof window === "undefined") return "";
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    const status = params.get("status");
+    if (token && status === "success") {
+      window.history.replaceState({}, document.title, window.location.pathname);
+      return "Your email has been verified successfully! Please log in.";
+    }
+    return "";
+  });
   const [resetLoading, setResetLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -50,19 +60,7 @@ export function LoginClient() {
   }, [clearError]);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
-    const status = params.get("status");
-
-    if (token && status === "success") {
-      setSuccessMsg("Your email has been verified successfully! Please log in.");
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-  }, []);
-
-  useEffect(() => {
     if (user && !loading) {
-      setSuccessMsg("Signed in. Redirecting...");
       const params = new URLSearchParams(window.location.search);
       const redirectTarget = sanitizeRedirect(params.get("redirect"));
       router.push(redirectTarget);

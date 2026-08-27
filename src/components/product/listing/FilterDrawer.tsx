@@ -5,7 +5,7 @@
  */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/utils/cn";
 
@@ -29,14 +29,15 @@ export function FilterDrawer({
 }: FilterDrawerProps) {
   const [tempCategory, setTempCategory] = useState(activeCategory);
   const [tempSortBy, setTempSortBy] = useState(sortBy);
+  const [prevOpen, setPrevOpen] = useState(isOpen);
 
-  // Sync state when drawer opens
-  useEffect(() => {
+  if (prevOpen !== isOpen) {
+    setPrevOpen(isOpen);
     if (isOpen) {
       setTempCategory(activeCategory);
       setTempSortBy(sortBy);
     }
-  }, [isOpen, activeCategory, sortBy]);
+  }
 
   const sortOptions = [
     { value: "featured", label: "Featured" },

@@ -19,6 +19,38 @@ interface UsersTableProps {
   onViewUser: (user: UserRow) => void;
 }
 
+interface SortHeaderProps {
+  label: string;
+  sortKey: SortKey;
+  currentSortKey: SortKey;
+  sortDir: "asc" | "desc";
+  onSort: (key: SortKey) => void;
+  align?: "left" | "center" | "right";
+}
+
+function SortHeader({
+  label,
+  sortKey,
+  currentSortKey,
+  sortDir,
+  onSort,
+  align = "left",
+}: SortHeaderProps) {
+  return (
+    <th
+      className={`px-6 py-4 cursor-pointer hover:text-text-primary select-none whitespace-nowrap ${
+        align === "center" ? "text-center" : align === "right" ? "text-right" : "text-left"
+      }`}
+      onClick={() => onSort(sortKey)}
+    >
+      <span>{label}</span>
+      {currentSortKey === sortKey && (
+        <span className="ml-1 text-[8px]">{sortDir === "asc" ? "▲" : "▼"}</span>
+      )}
+    </th>
+  );
+}
+
 export function UsersTable({
   users,
   total,
@@ -28,42 +60,20 @@ export function UsersTable({
   onSort,
   onViewUser,
 }: UsersTableProps) {
-  const SortHeader = ({
-    label,
-    sortKey: k,
-    align = "left",
-  }: {
-    label: string;
-    sortKey: SortKey;
-    align?: "left" | "center" | "right";
-  }) => (
-    <th
-      className={`px-6 py-4 cursor-pointer hover:text-text-primary select-none whitespace-nowrap ${
-        align === "center" ? "text-center" : align === "right" ? "text-right" : "text-left"
-      }`}
-      onClick={() => onSort(k)}
-    >
-      <span>{label}</span>
-      {sortKey === k && (
-        <span className="ml-1 text-[8px]">{sortDir === "asc" ? "▲" : "▼"}</span>
-      )}
-    </th>
-  );
-
   return (
     <div className="space-y-4">
       <div className="overflow-x-auto border border-border-subtle rounded-[24px] bg-bg-secondary shadow-sm">
         <table className="w-full border-collapse text-left text-sm">
           <thead>
             <tr className="border-b border-border-subtle bg-bg-primary/50 uppercase tracking-wider text-[10px] font-semibold text-text-secondary">
-              <SortHeader label="Name" sortKey="name" align="left" />
-              <SortHeader label="Email" sortKey="email" align="left" />
-              <SortHeader label="Verified" sortKey="emailVerified" align="left" />
+              <SortHeader label="Name" sortKey="name" currentSortKey={sortKey} sortDir={sortDir} onSort={onSort} align="left" />
+              <SortHeader label="Email" sortKey="email" currentSortKey={sortKey} sortDir={sortDir} onSort={onSort} align="left" />
+              <SortHeader label="Verified" sortKey="emailVerified" currentSortKey={sortKey} sortDir={sortDir} onSort={onSort} align="left" />
               <th className="px-6 py-4 text-left">
                 Auth
               </th>
-              <SortHeader label="Sessions" sortKey="sessionCount" align="left" />
-              <SortHeader label="Joined" sortKey="createdAt" align="left" />
+              <SortHeader label="Sessions" sortKey="sessionCount" currentSortKey={sortKey} sortDir={sortDir} onSort={onSort} align="left" />
+              <SortHeader label="Joined" sortKey="createdAt" currentSortKey={sortKey} sortDir={sortDir} onSort={onSort} align="left" />
               <th className="px-6 py-4 text-right">
                 Actions
               </th>

@@ -14,7 +14,7 @@
  *  - Fallback redirect to LS checkout if the overlay fails.
  */
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { useCartStore } from "@/stores/useCartStore";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useQueryClient } from "@tanstack/react-query";
@@ -28,24 +28,40 @@ export function useCheckoutForm() {
   const clearCart = useCartStore((s) => s.clearCart);
   const items = useCartStore((s) => s.items);
 
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState(() => user?.email || "");
+  const [prevUserEmail, setPrevUserEmail] = useState(user?.email);
+  if (prevUserEmail !== user?.email) {
+    setPrevUserEmail(user?.email);
+    if (user?.email) setEmail((prev) => prev || user.email);
+  }
+
+  const [firstName, setFirstName] = useState(() => {
+    if (profile?.displayName) {
+      const parts = profile.displayName.trim().split(/\s+/);
+      return parts[0] || "";
+    }
+    return "";
+  });
+  const [lastName, setLastName] = useState(() => {
+    if (profile?.displayName) {
+      const parts = profile.displayName.trim().split(/\s+/);
+      return parts.slice(1).join(" ");
+    }
+    return "";
+  });
+  const [prevDisplayName, setPrevDisplayName] = useState(profile?.displayName);
+  if (prevDisplayName !== profile?.displayName) {
+    setPrevDisplayName(profile?.displayName);
+    if (profile?.displayName) {
+      const parts = profile.displayName.trim().split(/\s+/);
+      if (parts.length > 0) setFirstName((prev) => prev || parts[0]);
+      if (parts.length > 1) setLastName((prev) => prev || parts.slice(1).join(" "));
+    }
+  }
+
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [zipCode, setZipCode] = useState("");
-
-  // Prefill email and split name from auth profile when available
-  useEffect(() => {
-    if (user?.email && !email) {
-      setEmail(user.email);
-    }
-    if (profile?.displayName && !firstName && !lastName) {
-      const parts = profile.displayName.trim().split(/\s+/);
-      if (parts.length > 0) setFirstName(parts[0]);
-      if (parts.length > 1) setLastName(parts.slice(1).join(" "));
-    }
-  }, [user, profile]);
 
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [touched, setTouched] = useState<Set<string>>(new Set());

@@ -50,26 +50,32 @@ export function InventoryClient() {
   const isAdmin = useAuthStore((s) => s.user?.isAdmin ?? false);
 
   const [localSearch, setLocalSearch] = useState(urlSearch);
+  const [prevUrlSearch, setPrevUrlSearch] = useState(urlSearch);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<ProductData | null>(null);
   const [productToDelete, setProductToDelete] = useState<ProductData | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  useEffect(() => {
+  if (prevUrlSearch !== urlSearch) {
+    setPrevUrlSearch(urlSearch);
     setLocalSearch(urlSearch);
-  }, [urlSearch]);
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (localSearch !== urlSearch) {
         const p = new URLSearchParams(searchParams.toString());
-        p.set('search', localSearch);
+        if (localSearch) {
+          p.set('search', localSearch);
+        } else {
+          p.delete('search');
+        }
         p.set('page', '1');
         router.replace(`${pathname}?${p.toString()}`);
       }
     }, 300);
     return () => clearTimeout(timer);
-  }, [localSearch]);
+  }, [localSearch, urlSearch, searchParams, router, pathname]);
 
   const updateParam = useCallback((key: string, value: string) => {
     const p = new URLSearchParams(searchParams.toString());

@@ -212,7 +212,7 @@ function getStorageKeyFromUrl(url: string, bucketName: string = 'product-media')
   return null;
 }
 
-async function ensureBucketsExist(admin: ReturnType<typeof createAdminClient>): Promise<void> {
+async function ensureBucketsExist(_admin: ReturnType<typeof createAdminClient>): Promise<void> {
   const bucketsList = execSync(`bunx @insforge/cli storage buckets`, { encoding: 'utf-8' });
 
   for (const bucketName of Object.values(BUCKETS)) {

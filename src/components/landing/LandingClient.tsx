@@ -33,14 +33,14 @@ export default function LandingClient({ initialData }: LandingClientProps) {
   const newsletter = useNewsletterSubmit();
 
   const serverDay = landing?.serverDay ?? new Date().getDate();
-  const allProducts = landing?.products ?? [];
-  const allCategories = landing?.categories ?? [];
+  const allProducts = landing?.products;
+  const allCategories = landing?.categories;
   const dbSlides = landing?.lookbook ?? [];
   const editorialItems = landing?.editorial ?? [];
   const materials = landing?.materials ?? [];
 
   const heroProducts = useMemo(() => {
-    if (!allProducts.length) return [];
+    if (!allProducts || !allProducts.length) return [];
     const len = allProducts.length;
     const count = Math.min(5, len);
     const selected: Product[] = [];
@@ -57,7 +57,7 @@ export default function LandingClient({ initialData }: LandingClientProps) {
   }, [allProducts, serverDay]);
 
   const signatureProducts = useMemo(() => {
-    if (!allProducts.length) return [];
+    if (!allProducts || !allProducts.length) return [];
     const len = allProducts.length;
     const selected: Product[] = [];
     for (let i = 0; i < Math.min(3, len); i++) {
@@ -68,7 +68,7 @@ export default function LandingClient({ initialData }: LandingClientProps) {
   }, [allProducts, serverDay]);
 
   const dailyCategories = useMemo(() => {
-    if (!allCategories.length) return [];
+    if (!allCategories || !allCategories.length) return [];
     return Array.from({ length: Math.min(3, allCategories.length) }, (_, i) =>
       allCategories[(serverDay + i) % allCategories.length]
     );

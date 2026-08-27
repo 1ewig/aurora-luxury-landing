@@ -17,12 +17,11 @@ interface LazySectionProps {
 }
 
 export function LazySection({ children, height = "min-h-[400px]", id }: LazySectionProps) {
-  const [inView, setInView] = useState(false);
+  const [inView, setInView] = useState(() => typeof window !== "undefined" && !("IntersectionObserver" in window));
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (typeof window === "undefined" || !("IntersectionObserver" in window)) {
-      setInView(true);
       return;
     }
 

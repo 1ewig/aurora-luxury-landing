@@ -25,7 +25,7 @@ if (!fs.existsSync(projectJsonPath)) {
   process.exit(1);
 }
 
-const projectJson = JSON.parse(fs.readFileSync(projectJsonPath, 'utf-8'));
+const _projectJson = JSON.parse(fs.readFileSync(projectJsonPath, 'utf-8'));
 
 if (fs.existsSync(dotenvPath)) {
   const envConfig = fs.readFileSync(dotenvPath, 'utf-8');

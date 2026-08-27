@@ -63,22 +63,28 @@ export function UsersClient() {
   } = useUsersManagement(page, urlSearch, verified, sortBy, sortDirParam);
 
   const [localSearch, setLocalSearch] = useState(urlSearch);
+  const [prevUrlSearch, setPrevUrlSearch] = useState(urlSearch);
 
-  useEffect(() => {
+  if (prevUrlSearch !== urlSearch) {
+    setPrevUrlSearch(urlSearch);
     setLocalSearch(urlSearch);
-  }, [urlSearch]);
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (localSearch !== urlSearch) {
         const p = new URLSearchParams(searchParams.toString());
-        p.set('search', localSearch);
+        if (localSearch) {
+          p.set('search', localSearch);
+        } else {
+          p.delete('search');
+        }
         p.set('page', '1');
         router.replace(`${pathname}?${p.toString()}`);
       }
     }, 300);
     return () => clearTimeout(timer);
-  }, [localSearch]);
+  }, [localSearch, urlSearch, searchParams, router, pathname]);
 
   const updateParam = useCallback((key: string, value: string) => {
     const p = new URLSearchParams(searchParams.toString());

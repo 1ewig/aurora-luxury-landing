@@ -45,22 +45,28 @@ export function OrdersClient() {
   } = useOrdersManagement(page, search, status);
 
   const [localSearch, setLocalSearch] = useState(search);
+  const [prevSearch, setPrevSearch] = useState(search);
 
-  useEffect(() => {
+  if (prevSearch !== search) {
+    setPrevSearch(search);
     setLocalSearch(search);
-  }, [search]);
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (localSearch !== search) {
         const p = new URLSearchParams(searchParams.toString());
-        p.set('search', localSearch);
+        if (localSearch) {
+          p.set('search', localSearch);
+        } else {
+          p.delete('search');
+        }
         p.set('page', '1');
         router.replace(`${pathname}?${p.toString()}`);
       }
     }, 300);
     return () => clearTimeout(timer);
-  }, [localSearch]);
+  }, [localSearch, search, searchParams, router, pathname]);
 
   const updateParam = useCallback((key: string, value: string) => {
     const p = new URLSearchParams(searchParams.toString());

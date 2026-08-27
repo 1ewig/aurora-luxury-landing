@@ -15,7 +15,7 @@
  * to keep the URL semantically meaningful for SEO and sharing.
  */
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { usePaginatedProductsQuery, useCategoriesQuery } from "@/hooks/queries";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
@@ -36,6 +36,12 @@ export function useProductFilter(options: UseProductFilterOptions = {}) {
   const pathname = usePathname();
 
   const [activeCategory, setActiveCategory] = useState<string>(initialCategory);
+  const [prevInitialCategory, setPrevInitialCategory] = useState(initialCategory);
+
+  if (prevInitialCategory !== initialCategory) {
+    setPrevInitialCategory(initialCategory);
+    setActiveCategory(initialCategory);
+  }
   
   // Read current filters directly from URL search parameters as the source of truth
   const page = Number(searchParams.get("page")) || 1;
@@ -48,16 +54,12 @@ export function useProductFilter(options: UseProductFilterOptions = {}) {
    * navigate on every keystroke — only on submit or clear.
    */
   const [searchQuery, setSearchQuery] = useState<string>(searchParam);
+  const [prevSearchParam, setPrevSearchParam] = useState(searchParam);
 
-  // Sync activeCategory with initialCategory when prop changes
-  useEffect(() => {
-    setActiveCategory(initialCategory);
-  }, [initialCategory]);
-
-  // Keep input text synced with URL (e.g. on back navigation)
-  useEffect(() => {
+  if (prevSearchParam !== searchParam) {
+    setPrevSearchParam(searchParam);
     setSearchQuery(searchParam);
-  }, [searchParam]);
+  }
 
   // Update page via router navigation
   const handlePageChange = (newPage: number) => {

@@ -97,7 +97,7 @@ function makeWebhookPayload(
         order_number: 12345,
         customer_id: "ls-cust-1",
         total: 10800,
-        ...(overrides.attributes as Record<string, unknown> ?? {}),
+        ...(overrides.attributes as Record<string, unknown>),
       },
     },
   };
