@@ -24,45 +24,48 @@ export function UsersSkeleton() {
 
       {/* Table Skeleton */}
       <div className="overflow-x-auto border border-border-subtle rounded-[24px] bg-bg-secondary shadow-sm">
-        <table className="w-full border-collapse">
+        <table className="w-full border-collapse text-left">
           <thead>
             <tr className="border-b border-border-subtle bg-bg-primary/50">
-              {["Name", "Email", "Verified", "Accounts", "Sessions", "Created", "Actions"].map((h) => (
-                <th key={h} className="px-4 py-4">
+              {["Name", "Email", "Verified", "Accounts", "Sessions", "Created"].map((h) => (
+                <th key={h} className="px-6 py-4">
                   <div className="h-3 w-16 bg-bg-secondary rounded" />
                 </th>
               ))}
+              <th className="px-6 py-4 text-right">
+                <div className="h-3 w-12 bg-bg-secondary rounded ml-auto" />
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border-subtle">
             {Array.from({ length: 5 }).map((_, i) => (
               <tr key={i}>
-                <td className="px-4 py-3">
+                <td className="px-6 py-4">
                   <div className="flex items-center gap-2">
                     <div className="h-4 w-28 bg-bg-primary rounded" />
                     <div className="h-4 w-12 bg-bg-primary rounded" />
                   </div>
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-6 py-4">
                   <div className="h-4 w-44 bg-bg-primary rounded" />
                 </td>
-                <td className="px-4 py-3">
-                  <div className="h-5 w-20 bg-bg-primary rounded-full mx-auto" />
+                <td className="px-6 py-4">
+                  <div className="h-5 w-20 bg-bg-primary rounded-full" />
                 </td>
-                <td className="px-4 py-3">
-                  <div className="flex justify-center gap-1">
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-1.5">
                     <div className="h-5 w-14 bg-bg-primary rounded" />
                     <div className="h-5 w-14 bg-bg-primary rounded" />
                   </div>
                 </td>
-                <td className="px-4 py-3">
-                  <div className="h-5 w-8 bg-bg-primary rounded-full mx-auto" />
+                <td className="px-6 py-4">
+                  <div className="h-5 w-8 bg-bg-primary rounded-full" />
                 </td>
-                <td className="px-4 py-3">
-                  <div className="h-3 w-24 bg-bg-primary rounded mx-auto" />
+                <td className="px-6 py-4">
+                  <div className="h-3 w-24 bg-bg-primary rounded" />
                 </td>
-                <td className="px-4 py-3 text-center">
-                  <div className="h-4 w-12 bg-bg-primary rounded inline-block" />
+                <td className="px-6 py-4 text-right">
+                  <div className="h-7 w-14 bg-bg-primary rounded-full inline-block" />
                 </td>
               </tr>
             ))}
